@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DriveWise — Used Car Buying Guide</title>
+<meta name="description" content="Brand reliability, generation-by-generation buying guides, depreciation curves, and a fair-deal checker for the US used car market.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#14181C; --surface:#1B2027; --surface-2:#232A33; --border:rgba(255,255,255,0.09);
+    --text:#F2F0EA; --text-dim:#9BA3AE; --text-faint:#6B7480;
+    --accent:#F2A93B; --good:#2FBFA0; --warn:#E8734A; --bad:#E2504C; --info:#5AA9E6;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif; margin:0;}
+  a{color:var(--accent); text-decoration:none;}
+  a:hover{color:#FFC266;}
+  button{font-family:inherit; cursor:pointer;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px; width:100%;}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:16px;}
+  .pill{display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border-radius:999px; font-size:11.5px; font-weight:700; letter-spacing:.02em;}
+
+  /* NAV */
+  header{border-bottom:1px solid var(--border); position:sticky; top:0; background:rgba(20,24,28,0.92); backdrop-filter:blur(8px); z-index:20;}
+  header .wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 24px; flex-wrap:wrap;}
+  .brand-mark{display:flex; align-items:center; gap:9px; color:var(--text); background:none; border:0; padding:0;}
+  .brand-mark span{font-size:18px; font-weight:700; font-family:'Space Grotesk',sans-serif;}
+  nav.tabs{display:flex; gap:4px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:4px;}
+  nav.tabs button{background:none; border:0; color:var(--text-dim); font-size:13.5px; font-weight:600; padding:9px 16px; border-radius:9px;}
+  nav.tabs button.active{background:var(--surface-2); color:var(--text);}
+  nav.tabs button:hover:not(.active){color:var(--text);}
+
+  /* HERO */
+  .hero{padding:52px 0 36px; border-bottom:1px solid var(--border); background:radial-gradient(ellipse 900px 380px at 85% -20%, rgba(242,169,59,0.09), transparent);}
+  .hero h1{font-size:clamp(28px,4.5vw,44px); line-height:1.1; font-weight:700;}
+  .hero p{font-size:15px; color:var(--text-dim); max-width:620px; margin-top:14px; line-height:1.6;}
+  .stat-row{display:flex; gap:28px; flex-wrap:wrap; margin-top:26px;}
+  .stat-row .num{font-size:26px; font-weight:700; font-family:'Space Grotesk',sans-serif;}
+  .stat-row .lbl{font-size:12px; color:var(--text-faint); margin-top:2px;}
+
+  /* FORM CONTROLS */
+  label{display:block; font-size:12px; font-weight:600; color:var(--text-dim); margin-bottom:6px; text-transform:uppercase; letter-spacing:.03em;}
+  select, input[type=number]{width:100%; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:inherit; font-size:14.5px; padding:11px 13px; outline:0; appearance:none;}
+  select:focus, input:focus{border-color:var(--accent);}
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239BA3AE' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:34px;}
+  .field-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px;}
+  .btn{background:var(--accent); color:#241705; border:0; font-weight:700; font-size:14.5px; padding:13px 22px; border-radius:10px;}
+  .btn:hover{background:#FFC266;}
+  .btn-ghost{background:var(--surface-2); color:var(--text); border:1px solid var(--border); font-weight:600; font-size:13.5px; padding:10px 16px; border-radius:9px;}
+
+  /* VIEWS */
+  .view{display:none;}
+  .view.active{display:block;}
+  section{padding:40px 0;}
+  section h2{font-size:21px; font-weight:700;}
+  .section-sub{font-size:13px; color:var(--text-faint); margin-top:4px;}
+
+  /* BRAND GRID */
+  .brand-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; margin-top:22px;}
+  .brand-card{padding:18px; display:flex; flex-direction:column; gap:12px; cursor:pointer; transition:border-color .15s;}
+  .brand-card:hover{border-color:rgba(242,169,59,0.4);}
+  .brand-top{display:flex; align-items:center; gap:11px;}
+  .brand-icon{width:38px; height:38px; border-radius:10px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--text-dim); flex-shrink:0;}
+  .brand-name{font-weight:600; font-size:14.5px;}
+  .brand-seg{font-size:11.5px; color:var(--text-faint);}
+  .brand-metrics{display:flex; justify-content:space-between;}
+  .metric-lbl{font-size:10.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.03em;}
+  .metric-val{font-size:18px; font-weight:700; font-family:'Space Grotesk',sans-serif; margin-top:2px;}
+  .bar{height:5px; border-radius:3px; background:var(--surface-2); overflow:hidden;}
+  .bar > div{height:100%;}
+
+  /* GUIDE DETAIL */
+  .tier-best{background:rgba(47,191,160,0.14); color:var(--good);}
+  .tier-good{background:rgba(90,169,230,0.14); color:var(--info);}
+  .tier-caution{background:rgba(242,169,59,0.14); color:var(--accent);}
+  .tier-avoid{background:rgba(226,80,76,0.14); color:var(--bad);}
+  .detail-card{padding:26px; margin-top:22px;}
+  .detail-head{display:flex; flex-wrap:wrap; align-items:center; gap:12px; justify-content:space-between; margin-bottom:18px;}
+  .detail-head h3{font-size:20px; font-weight:700;}
+  .detail-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:18px;}
+  .detail-grid .k{font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.03em; margin-bottom:5px;}
+  .detail-grid .v{font-size:14px; line-height:1.55;}
+  ul.issues{margin:0; padding-left:18px; font-size:13.5px; color:var(--text-dim); line-height:1.7;}
+  .dep-chart{display:flex; align-items:flex-end; gap:18px; height:120px; margin-top:16px; padding:0 4px;}
+  .dep-bar{flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;}
+  .dep-bar .fill{width:100%; max-width:46px; border-radius:5px 5px 0 0; background:var(--accent);}
+  .dep-bar .pct{font-size:12.5px; font-weight:600;}
+  .dep-bar .yr{font-size:11px; color:var(--text-faint);}
+  .best-years-callout{padding:20px 22px; margin-top:22px; border-color:rgba(47,191,160,0.35); background:linear-gradient(180deg, rgba(47,191,160,0.07), var(--surface)); display:flex; gap:14px; align-items:flex-start;}
+
+  /* DEAL CHECKER */
+  .deal-card{padding:28px; margin-top:22px;}
+  .verdict-box{margin-top:26px; padding-top:22px; border-top:1px solid var(--border); display:none;}
+  .verdict-box.show{display:block;}
+  .verdict-pill{font-size:13px; font-weight:700; padding:7px 16px; border-radius:999px;}
+  .verdict-grid{display:flex; gap:30px; flex-wrap:wrap; margin-top:18px;}
+  .verdict-grid .num{font-size:23px; font-weight:700; font-family:'Space Grotesk',sans-serif;}
+  .note-box{margin-top:16px; padding:12px 14px; border-radius:10px; background:var(--surface-2); font-size:13px; color:var(--text-dim); line-height:1.6;}
+
+  footer{border-top:1px solid var(--border); margin-top:20px;}
+  footer .wrap{padding:26px 24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12px; color:var(--text-faint); line-height:1.6;}
+
+  @media (max-width:640px){
+    .hero{padding:36px 0 28px;}
+    section{padding:28px 0;}
+    nav.tabs{width:100%; justify-content:space-between;}
+    nav.tabs button{flex:1; text-align:center; padding:9px 6px;}
+    .dep-chart{gap:8px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <button class="brand-mark" onclick="goView('brands')" aria-label="DriveWise home">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13l1.6-5.2A2 2 0 0 1 6.5 6.4h11A2 2 0 0 1 19.4 7.8L21 13" stroke="#F2A93B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2.5" y="13" width="19" height="5.5" rx="1.6" stroke="#F2A93B" stroke-width="1.8"/><circle cx="7" cy="18.7" r="1.6" fill="#14181C" stroke="#F2A93B" stroke-width="1.6"/><circle cx="17" cy="18.7" r="1.6" fill="#14181C" stroke="#F2A93B" stroke-width="1.6"/></svg>
+      <span>DriveWise</span>
+    </button>
+    <nav class="tabs" role="tablist">
+      <button data-view="brands" onclick="goView('brands')">Brands</button>
+      <button data-view="guide" onclick="goView('guide')">Model Guide</button>
+      <button data-view="deal" onclick="goView('deal')">Deal Checker</button>
+    </nav>
+  </div>
+</header>
+
+<!-- BRANDS VIEW -->
+<div class="view" id="view-brands">
+  <div class="hero">
+    <div class="wrap">
+      <div class="pill" style="background:rgba(242,169,59,0.12); color:var(--accent); margin-bottom:16px;">21 BRANDS · DATA THROUGH 2026 MODEL YEAR</div>
+      <h1>Buy the right car.<br>Not just a car.</h1>
+      <p>Reliability by brand and generation, real depreciation curves, and the best years to buy — for every major brand sold in the US. Then check if the car you found is priced fairly.</p>
+      <div class="stat-row">
+        <div><div class="num" id="stat-brands">–</div><div class="lbl">brands tracked</div></div>
+        <div><div class="num" id="stat-models">–</div><div class="lbl">models covered</div></div>
+        <div><div class="num" id="stat-gens">–</div><div class="lbl">generations detailed</div></div>
+      </div>
+    </div>
+  </div>
+  <section>
+    <div class="wrap">
+      <h2>Browse by brand</h2>
+      <div class="section-sub">Reliability score (0–10) · typical value retained after 5 years</div>
+      <div class="brand-grid" id="brand-grid"></div>
+    </div>
+  </section>
+</div>
+
+<!-- GUIDE VIEW -->
+<div class="view" id="view-guide">
+  <section style="padding-top:36px;">
+    <div class="wrap">
+      <h2>Model guide</h2>
+      <div class="section-sub">Pick a brand, model and generation to see reliability, known issues and the best years to buy.</div>
+      <div class="field-grid" style="margin-top:20px;">
+        <div>
+          <label for="g-brand">Brand</label>
+          <select id="g-brand" onchange="onGuideBrandChange()"></select>
+        </div>
+        <div>
+          <label for="g-model">Model</label>
+          <select id="g-model" onchange="onGuideModelChange()"></select>
+        </div>
+        <div>
+          <label for="g-gen">Generation</label>
+          <select id="g-gen" onchange="renderGuideDetail()"></select>
+        </div>
+      </div>
+
+      <div id="guide-best-years"></div>
+      <div id="guide-detail"></div>
+
+      <div class="card" style="padding:22px; margin-top:24px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
+        <div>
+          <div style="font-weight:700; font-size:15.5px;">Found one you like?</div>
+          <div style="font-size:13px; color:var(--text-dim); margin-top:3px;">Check whether its price, year and mileage add up to a fair deal.</div>
+        </div>
+        <button class="btn" onclick="sendToDealChecker()">Open in Deal Checker →</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DEAL VIEW -->
+<div class="view" id="view-deal">
+  <section style="padding-top:36px;">
+    <div class="wrap" style="max-width:760px;">
+      <h2 style="text-align:center;">Is it a fair deal?</h2>
+      <div class="section-sub" style="text-align:center;">Pick the car, then enter its year, mileage and asking price.</div>
+
+      <div class="card deal-card">
+        <div class="field-grid">
+          <div>
+            <label for="d-brand">Brand</label>
+            <select id="d-brand" onchange="onDealBrandChange()"></select>
+          </div>
+          <div>
+            <label for="d-model">Model</label>
+            <select id="d-model" onchange="onDealModelChange()"></select>
+          </div>
+          <div>
+            <label for="d-gen">Generation</label>
+            <select id="d-gen" onchange="onDealGenChange()"></select>
+          </div>
+        </div>
+        <div class="field-grid" style="margin-top:14px;">
+          <div>
+            <label for="d-year">Model year</label>
+            <input type="number" id="d-year" step="1">
+          </div>
+          <div>
+            <label for="d-mileage">Mileage</label>
+            <input type="number" id="d-mileage" step="1000" min="0" value="60000">
+          </div>
+          <div>
+            <label for="d-price">Asking price ($)</label>
+            <input type="number" id="d-price" step="100" min="0" value="22000">
+          </div>
+        </div>
+
+        <button class="btn" style="width:100%; margin-top:20px;" onclick="checkDeal()">Check Deal</button>
+
+        <div class="verdict-box" id="deal-result">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <span class="verdict-pill" id="verdict-pill"></span>
+            <span style="font-size:13.5px; color:var(--text-dim);" id="verdict-diff"></span>
+          </div>
+          <div class="verdict-grid">
+            <div>
+              <div class="metric-lbl">Estimated fair range</div>
+              <div class="num" id="verdict-range"></div>
+            </div>
+            <div>
+              <div class="metric-lbl">Expected mileage for its age</div>
+              <div class="num" id="verdict-expected-mi"></div>
+            </div>
+          </div>
+          <div class="note-box" id="verdict-note"></div>
+        </div>
+      </div>
+      <p style="font-size:11.5px; color:var(--text-faint); text-align:center; margin-top:14px;">Estimate uses a depreciation model built from each brand's typical resale pattern, not live market listings — treat it as a sanity check, not an appraisal.</p>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>DriveWise — reliability and depreciation figures are a directional index compiled from well-established industry reliability reporting patterns (not a live feed). Last reviewed Oct 2026. Always verify a specific VIN's recall and service history before buying.</span>
+    <span>© 2026 DriveWise</span>
+  </div>
+</footer>
+
+<script>
+/* ============== DATA ============== */
+const BRANDS = [
+  {id:'toyota', name:'Toyota', seg:'Mainstream', score:9.2, retained5:58, upkeep:440,
+    strengths:['Legendary engine longevity, especially 4-cyl and hybrid powertrains','Extremely strong resale value and parts availability'],
+    watch:['Infotainment feels dated versus rivals','Base trims are light on standard tech']},
+  {id:'lexus', name:'Lexus', seg:'Luxury', score:9.4, retained5:55, upkeep:550,
+    strengths:['Toyota mechanical DNA with a quieter, more isolated ride','Among the best reliability records of any luxury brand'],
+    watch:['Older trackpad/mouse infotainment is widely disliked','Luxury-brand service pricing despite Toyota-sourced parts']},
+  {id:'honda', name:'Honda', seg:'Mainstream', score:8.8, retained5:56, upkeep:430,
+    strengths:['Engines and post-2018 CVTs are very durable','Efficient, low running costs'],
+    watch:['Some turbo 1.5L engines had oil-dilution issues in cold climates (2016–2020)','Road/wind noise on older Civic/Accord generations']},
+  {id:'mazda', name:'Mazda', seg:'Mainstream', score:8.5, retained5:50, upkeep:470,
+    strengths:['SKYACTIV engines are durable and efficient','Upscale interior quality for the price'],
+    watch:['No touchscreen on many trims (controller-only infotainment)','Smaller dealer network than the Big 3 Japanese brands']},
+  {id:'subaru', name:'Subaru', seg:'Mainstream', score:8.0, retained5:52, upkeep:630,
+    strengths:['Standard AWD is genuinely capable and reliable','Strong safety reputation'],
+    watch:['Head-gasket issues on older 2.5L EJ engines (pre-2011)','CVT reliability concerns on some 2013–2019 models']},
+  {id:'hyundai', name:'Hyundai', seg:'Mainstream', score:7.7, retained5:46, upkeep:500,
+    strengths:["Among the best new-car warranties, legacy coverage carries to used buyers",'Rapid recent quality improvement'],
+    watch:['Theft vulnerability on 2011–2022 non-immobilizer models','Engine knock/failure recalls on 2.0L/2.4L Theta II engines (2011–2019)']},
+  {id:'kia', name:'Kia', seg:'Mainstream', score:7.6, retained5:45, upkeep:490,
+    strengths:['Shares strong warranty/engineering with Hyundai','Sportage/Telluride regarded as class leaders'],
+    watch:['Shares Theta II engine recall risk with related Hyundai models','Shares the non-immobilizer theft-vulnerability issue (2011–2022)']},
+  {id:'ford', name:'Ford', seg:'Mainstream', score:6.7, retained5:42, upkeep:720,
+    strengths:['F-150 is the class benchmark for capability and parts support','Strong V8 and modern turbo (EcoBoost) options'],
+    watch:['10-speed auto had early shift-quality complaints (2017–2019)','PowerShift dual-clutch (Focus/Fiesta, 2011–2016) — avoid']},
+  {id:'chevrolet', name:'Chevrolet', seg:'Mainstream', score:6.5, retained5:40, upkeep:700,
+    strengths:['5.3L/6.2L V8s are proven long-haul workhorses','Wide service network and cheap parts'],
+    watch:['AFM lifter failures on 5.3L/6.2L V8s, especially 2014–2019','Some 8-/10-speed auto shift-quality complaints']},
+  {id:'gmc', name:'GMC', seg:'Mainstream', score:6.6, retained5:45, upkeep:750,
+    strengths:['Mechanically near-identical to Silverado/Equinox with more standard kit','Denali trim holds value unusually well'],
+    watch:['Shares AFM lifter-failure risk on Chevrolet-sourced V8 engines','Premium pricing over the equivalent Chevrolet']},
+  {id:'ram', name:'Ram', seg:'Mainstream', score:6.0, retained5:43, upkeep:850,
+    strengths:['Coil-spring rear suspension gives the best ride in class','5.7L Hemi V8 and 6.7L Cummins diesel are proven'],
+    watch:['Air-suspension and e-park-brake modules are costly out of warranty','Early 8-speed auto (2013–2018) had shudder complaints']},
+  {id:'jeep', name:'Jeep', seg:'Mainstream', score:5.8, retained5:41, upkeep:700,
+    strengths:['Grand Cherokee/Wrangler off-road capability is class-leading','5.7L Hemi V8 models are mechanically durable'],
+    watch:['Electrical gremlins are a recurring theme across the lineup','Air-suspension and 8-/9-speed auto repairs can be expensive']},
+  {id:'bmw', name:'BMW', seg:'Luxury', score:6.9, retained5:39, upkeep:1150,
+    strengths:['Inline-six and modern turbo-four engines are durable long-term','Chassis, steering and brakes hold up well with normal wear'],
+    watch:['Electric water pump & thermostat wear, typically 60–90k miles','VANOS solenoid and electric power-steering rack faults with age']},
+  {id:'mercedes', name:'Mercedes-Benz', seg:'Luxury', score:6.3, retained5:37, upkeep:1250,
+    strengths:['Smooth, refined ride and strong crash-safety reputation','Diesel (OM642/OM651) engines are extremely long-lived when maintained'],
+    watch:['Air-matic suspension and wiring-harness issues on 2008–2016 models','Rust on subframes/brake lines in salt-belt climates, pre-2016']},
+  {id:'audi', name:'Audi', seg:'Luxury', score:6.4, retained5:36, upkeep:1200,
+    strengths:['Quattro AWD and interior build quality are segment-leading','TFSI engines are strong performers when maintained on schedule'],
+    watch:['Timing-chain tensioner failures on 2.0T EA888 Gen1/2 (2009–2016)','Carbon buildup on direct-injection engines needs periodic cleaning']},
+  {id:'vw', name:'Volkswagen', seg:'Mainstream', score:6.2, retained5:40, upkeep:750,
+    strengths:['TSI engines and post-2015 DSG dual-clutch are strong once sorted','European-feeling chassis tuning at a mainstream price'],
+    watch:['Early DSG dual-clutch (2009–2014) had mechatronic-unit failures','Water pump/timing-chain-tensioner issues on pre-2017 EA888 2.0T']},
+  {id:'nissan', name:'Nissan', seg:'Mainstream', score:6.6, retained5:41, upkeep:580,
+    strengths:['VQ-series V6 engines are strong and long-lived','Roomy, comfortable interiors across the lineup'],
+    watch:['CVT failures are a widespread, well-documented issue (2013–2018)','Infotainment/electrical gremlins on some 2018–2021 models']},
+  {id:'tesla', name:'Tesla', seg:'Luxury', score:6.5, retained5:48, upkeep:830,
+    strengths:['Electric drivetrain has far fewer wear parts than an engine','Over-the-air updates continually improve software and range'],
+    watch:['Panel-gap/paint inconsistency, especially 2017–2020 builds','Out-of-warranty body/drive-unit repairs can be costly and service-limited']},
+  {id:'volvo', name:'Volvo', seg:'Luxury', score:6.8, retained5:40, upkeep:900,
+    strengths:['Among the strongest safety reputations in the industry','Interior quality and comfort are segment-leading'],
+    watch:['Electrical/infotainment (Sensus) gremlins are a recurring complaint','Turbo/supercharged 4-cyls need strict maintenance adherence']},
+  {id:'porsche', name:'Porsche', seg:'Luxury', score:7.8, retained5:55, upkeep:1300,
+    strengths:['911 flat-six engines are exceptionally durable when maintained','Resale value is the strongest in the industry, especially manuals'],
+    watch:['IMS bearing risk on 2000–2008 engines (resolved by 2009+)','Maintenance and parts costs are high regardless of age']},
+  {id:'landrover', name:'Land Rover', seg:'Luxury', score:4.8, retained5:33, upkeep:1550,
+    strengths:['Off-road capability (Range Rover/Discovery) is among the best in class','Interior luxury and presence are segment-leading'],
+    watch:['Air suspension/electrical complaints are the most-reported of any luxury brand','Timing-chain tensioner issues on early Ingenium/JLR V6-V8 engines']}
+];
+
+const TIER_LABEL = {best:'Best Pick', good:'Solid Choice', caution:'Buy With Care', avoid:'High Risk'};
+
+const MODELS = [
+  {brand:'toyota', name:'Camry', body:'Sedan', msrp:28000, gens:[
+    {label:'XV70', y0:2018, y1:2024, engine:'2.5L I4 / 2.5L Hybrid', tier:'best', issues:['Very few systemic issues reported'], pick:'Hybrid LE/SE', mileage:'Fine well past 150k miles with basic maintenance'},
+    {label:'XV50', y0:2012, y1:2017, engine:'2.5L I4', tier:'good', issues:['Some early 2012–13 models had infotainment glitches'], pick:'2015–17 facelift', mileage:'Solid to 150k+ miles'},
+    {label:'XV40', y0:2007, y1:2011, engine:'2.4L I4 / 3.5L V6', tier:'good', issues:['Oil consumption reported on some 2007–09 2.4L engines'], pick:'2010–11 or the V6', mileage:'Check oil-consumption history past 100k'}
+  ]},
+  {brand:'toyota', name:'RAV4', body:'SUV', msrp:32000, gens:[
+    {label:'XA50', y0:2019, y1:2025, engine:'2.5L I4 / Hybrid', tier:'best', issues:['Early 2019 models had a transmission hesitation bug, fixed by recall'], pick:'2021+ or Hybrid', mileage:'Fine to 150k+ miles'},
+    {label:'XA40', y0:2013, y1:2018, engine:'2.5L I4', tier:'good', issues:['None major'], pick:'2016–18', mileage:'Solid to 150k miles'},
+    {label:'XA30', y0:2006, y1:2012, engine:'2.5L I4 / 3.5L V6', tier:'good', issues:['Rear differential wear on V6 AWD models'], pick:'4-cyl FWD', mileage:'Check rear-diff fluid history on AWD'}
+  ]},
+  {brand:'lexus', name:'RX', body:'SUV', msrp:48000, gens:[
+    {label:'AL20', y0:2023, y1:2026, engine:'2.4L Turbo / Hybrid', tier:'best', issues:['Still accumulating long-term data; early reports positive'], pick:'RX350h', mileage:'Too new for high-mileage data'},
+    {label:'AL10', y0:2016, y1:2022, engine:'3.5L V6 / Hybrid', tier:'best', issues:['Very few reported issues'], pick:'RX350 AWD', mileage:'Fine to 150k+ miles'},
+    {label:'AL10 (early)', y0:2010, y1:2015, engine:'3.5L V6', tier:'good', issues:['Dashboard trim can get sticky in high-heat climates'], pick:'2013–15', mileage:'Solid to 180k miles'}
+  ]},
+  {brand:'lexus', name:'ES', body:'Sedan', msrp:44000, gens:[
+    {label:'XZ10', y0:2019, y1:2026, engine:'3.5L V6 / 2.5L Hybrid', tier:'best', issues:['None major'], pick:'ES350', mileage:'Fine to 150k+ miles'},
+    {label:'XV60', y0:2013, y1:2018, engine:'3.5L V6 / Hybrid', tier:'best', issues:['None major'], pick:'ES350', mileage:'Solid to 180k miles'}
+  ]},
+  {brand:'honda', name:'Accord', body:'Sedan', msrp:29000, gens:[
+    {label:'CV', y0:2018, y1:2022, engine:'1.5L Turbo / 2.0L Turbo / Hybrid', tier:'good', issues:['1.5T oil dilution in cold climates, mostly resolved by a 2019 software update'], pick:'2020–22 or Hybrid', mileage:'Fine to 150k; confirm the oil-dilution TSB was done'},
+    {label:'CR', y0:2013, y1:2017, engine:'2.4L I4 / 3.5L V6', tier:'best', issues:['None major'], pick:'2016–17', mileage:'Very strong to 200k miles'}
+  ]},
+  {brand:'honda', name:'CR-V', body:'SUV', msrp:31000, gens:[
+    {label:'RW', y0:2023, y1:2026, engine:'1.5L Turbo / Hybrid', tier:'good', issues:['Too new for long-term data'], pick:'Hybrid', mileage:'Too new — limited data'},
+    {label:'RT/RW', y0:2017, y1:2022, engine:'1.5L Turbo', tier:'caution', issues:['Oil-dilution complaints concentrated in 2017–2019 cold-climate cars'], pick:'2020–22 post-fix', mileage:'Verify oil-dilution history before buying'},
+    {label:'RM', y0:2012, y1:2016, engine:'2.4L I4', tier:'best', issues:['None major'], pick:'2015–16', mileage:'Strong to 200k miles'}
+  ]},
+  {brand:'mazda', name:'Mazda3', body:'Sedan/Hatch', msrp:24000, gens:[
+    {label:'BP', y0:2019, y1:2026, engine:'2.5L I4 / Turbo', tier:'best', issues:['None major'], pick:'2.5L Turbo', mileage:'Fine to 150k+ miles'},
+    {label:'BM/BN', y0:2014, y1:2018, engine:'2.0L/2.5L I4', tier:'good', issues:['None major'], pick:'2016–18', mileage:'Solid to 150k miles'}
+  ]},
+  {brand:'mazda', name:'CX-5', body:'SUV', msrp:29000, gens:[
+    {label:'KF', y0:2017, y1:2026, engine:'2.5L I4 / Turbo', tier:'best', issues:['None major'], pick:'2019+ facelift', mileage:'Fine to 150k+ miles'},
+    {label:'KE', y0:2013, y1:2016, engine:'2.0L/2.5L I4', tier:'good', issues:['None major'], pick:'2015–16', mileage:'Solid to 150k miles'}
+  ]},
+  {brand:'subaru', name:'Outback', body:'Wagon/SUV', msrp:31000, gens:[
+    {label:'BT', y0:2020, y1:2026, engine:'2.5L I4 / 2.4L Turbo', tier:'good', issues:['CVT chain/belt concerns reported, improved after 2021'], pick:'2022+, 2.5L naturally aspirated', mileage:'Fine to 150k; favor the non-turbo'},
+    {label:'BS', y0:2015, y1:2019, engine:'2.5L I4', tier:'caution', issues:['CVT failures reported, some covered under extended warranty'], pick:'2018–19', mileage:'Verify CVT service history'},
+    {label:'BR', y0:2010, y1:2014, engine:'2.5L I4', tier:'good', issues:['Head-gasket risk largely resolved by this generation'], pick:'2013–14', mileage:'Solid to 180k miles'}
+  ]},
+  {brand:'subaru', name:'Forester', body:'SUV', msrp:29000, gens:[
+    {label:'SK', y0:2019, y1:2026, engine:'2.5L I4', tier:'good', issues:['CVT concerns similar to Outback, improved in later years'], pick:'2022+', mileage:'Fine to 150k miles'},
+    {label:'SJ', y0:2014, y1:2018, engine:'2.5L I4', tier:'good', issues:['Some CVT complaints'], pick:'2017–18', mileage:'Solid to 150k miles'}
+  ]},
+  {brand:'hyundai', name:'Elantra', body:'Sedan', msrp:23000, gens:[
+    {label:'CN7', y0:2021, y1:2026, engine:'2.0L I4 / Hybrid', tier:'good', issues:['None major; confirm the anti-theft software update was done'], pick:'SEL', mileage:'Fine to 150k miles'},
+    {label:'AD', y0:2017, y1:2020, engine:'2.0L I4', tier:'good', issues:['Check for Theta-engine recall completion on Sport/1.6T trims'], pick:'2019–20', mileage:'Solid to 150k if recall work was completed'}
+  ]},
+  {brand:'hyundai', name:'Tucson', body:'SUV', msrp:28000, gens:[
+    {label:'NX4', y0:2022, y1:2026, engine:'2.5L I4 / Hybrid', tier:'good', issues:['None major'], pick:'Hybrid', mileage:'Fine to 150k miles'},
+    {label:'TL', y0:2016, y1:2021, engine:'2.0L/2.4L I4', tier:'caution', issues:['Theta II engine failure/knock recall — verify completed'], pick:'2020–21 post-recall', mileage:'Confirm engine recall history before buying'}
+  ]},
+  {brand:'kia', name:'K5 / Optima', body:'Sedan', msrp:26000, gens:[
+    {label:'DL3', y0:2021, y1:2026, engine:'1.6L Turbo / 2.5L Turbo', tier:'good', issues:['None major'], pick:'GT-Line', mileage:'Fine to 150k miles'},
+    {label:'JF', y0:2016, y1:2020, engine:'2.0L/2.4L I4', tier:'caution', issues:['Theta II engine recall risk — verify completed'], pick:'2019–20 post-recall', mileage:'Confirm engine recall history'}
+  ]},
+  {brand:'kia', name:'Sportage', body:'SUV', msrp:28000, gens:[
+    {label:'NQ5', y0:2023, y1:2026, engine:'2.5L I4 / Hybrid', tier:'good', issues:['None major'], pick:'Hybrid', mileage:'Fine to 150k miles'},
+    {label:'QL', y0:2017, y1:2022, engine:'2.4L I4', tier:'good', issues:['None major'], pick:'2020–22', mileage:'Solid to 150k miles'}
+  ]},
+  {brand:'ford', name:'F-150', body:'Truck', msrp:42000, gens:[
+    {label:'P702', y0:2021, y1:2026, engine:'3.5L EcoBoost / 5.0L V8 / Hybrid', tier:'best', issues:['None major'], pick:'5.0L V8 or Hybrid PowerBoost', mileage:'Fine to 150k+ miles'},
+    {label:'P552', y0:2015, y1:2020, engine:'2.7L/3.5L EcoBoost / 5.0L V8', tier:'good', issues:['Early 10-speed auto (2017–18) had rough-shift complaints, mostly software-fixed'], pick:'2019–20 or the 5.0L V8', mileage:'Strong to 200k with maintenance'},
+    {label:'P415', y0:2009, y1:2014, engine:'3.5L EcoBoost / 5.0L V8', tier:'good', issues:['Early EcoBoost (2011–12) had some turbo/coolant issues, largely sorted by 2013'], pick:'5.0L V8', mileage:'Solid to 200k miles'}
+  ]},
+  {brand:'ford', name:'Escape', body:'SUV', msrp:29000, gens:[
+    {label:'4th gen', y0:2020, y1:2026, engine:'1.5L/2.0L EcoBoost / Hybrid', tier:'good', issues:['None major'], pick:'Hybrid', mileage:'Fine to 150k miles'},
+    {label:'3rd gen', y0:2013, y1:2019, engine:'1.5L/1.6L/2.0L EcoBoost', tier:'caution', issues:['1.6L EcoBoost (2013–14) had a coolant-leak/engine-fire recall — verify completed'], pick:'2017–19, 2.0L', mileage:'Confirm recall completion before buying'}
+  ]},
+  {brand:'chevrolet', name:'Silverado 1500', body:'Truck', msrp:40000, gens:[
+    {label:'T1', y0:2019, y1:2026, engine:'5.3L/6.2L V8 / 3.0L Duramax Diesel', tier:'good', issues:['AFM lifter failures still reported on 5.3L/6.2L; the Duramax diesel is well regarded'], pick:'3.0L Duramax or 6.2L', mileage:'Check for lifter-tick before buying a V8'},
+    {label:'K2', y0:2014, y1:2018, engine:'4.3L V6 / 5.3L/6.2L V8', tier:'caution', issues:['Widely reported AFM lifter failures, 80k–130k mile failure window common'], pick:'Post-2017 with updated lifters', mileage:'Budget for lifter/cam repair past 100k'}
+  ]},
+  {brand:'chevrolet', name:'Equinox', body:'SUV', msrp:29000, gens:[
+    {label:'3rd gen', y0:2018, y1:2026, engine:'1.5L Turbo', tier:'good', issues:['Some oil-consumption complaints on early 1.5T (2018–19)'], pick:'2021+', mileage:'Fine to 150k miles'},
+    {label:'2nd gen', y0:2010, y1:2017, engine:'2.4L I4', tier:'caution', issues:['Excessive oil consumption, a well-documented issue on the 2.4L Ecotec'], pick:'V6 LTZ trim avoids the 2.4L issue', mileage:'Avoid 2.4L examples with no oil-consumption history'}
+  ]},
+  {brand:'gmc', name:'Sierra 1500', body:'Truck', msrp:42000, gens:[
+    {label:'T1', y0:2019, y1:2026, engine:'5.3L/6.2L V8 / 3.0L Duramax', tier:'good', issues:['Same AFM lifter risk as the Silverado'], pick:'3.0L Duramax', mileage:'Check for lifter-tick before buying a V8'},
+    {label:'K2', y0:2014, y1:2018, engine:'5.3L/6.2L V8', tier:'caution', issues:['AFM lifter failures, same as Silverado'], pick:'Post-2017', mileage:'Budget for lifter repair past 100k'}
+  ]},
+  {brand:'gmc', name:'Terrain', body:'SUV', msrp:30000, gens:[
+    {label:'3rd gen', y0:2018, y1:2026, engine:'1.5L/2.0L Turbo', tier:'good', issues:['Minor oil-consumption reports on the 1.5T'], pick:'2.0L Turbo Denali', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'ram', name:'1500', body:'Truck', msrp:43000, gens:[
+    {label:'DT', y0:2019, y1:2026, engine:'3.6L V6 / 5.7L Hemi V8 / eTorque Hybrid', tier:'good', issues:['Air suspension and the eTorque belt-starter module can be costly out of warranty'], pick:'5.7L Hemi, coil-spring, non-air-suspension', mileage:'Fine to 150k+ miles'},
+    {label:'DS', y0:2009, y1:2018, engine:'3.6L V6 / 5.7L Hemi V8', tier:'good', issues:['Early 8-speed auto (2013–14) had shudder complaints'], pick:'2016–18', mileage:'Strong to 200k with maintenance'}
+  ]},
+  {brand:'jeep', name:'Grand Cherokee', body:'SUV', msrp:40000, gens:[
+    {label:'WL', y0:2022, y1:2026, engine:'3.6L V6 / 5.7L Hemi V8', tier:'good', issues:['Infotainment and electrical-sensor complaints are common'], pick:'5.7L Hemi, non-air-suspension', mileage:'Fine to 150k miles'},
+    {label:'WK2', y0:2011, y1:2021, engine:'3.6L V6 / 5.7L Hemi V8', tier:'caution', issues:['Air-suspension and electrical issues widely reported, worse on early (2011–13) models'], pick:'2017–21, coil-spring Laredo/Limited', mileage:'Budget for suspension/electrical repairs past 100k'}
+  ]},
+  {brand:'jeep', name:'Wrangler', body:'SUV', msrp:36000, gens:[
+    {label:'JL', y0:2018, y1:2026, engine:'3.6L V6 / 2.0L Turbo / 4xe Hybrid', tier:'good', issues:['Death-wobble steering complaints on some units; 2.0L Turbo adds complexity'], pick:'3.6L V6, Sport/Sahara', mileage:'Fine to 150k; favor the V6'},
+    {label:'JK', y0:2007, y1:2017, engine:'3.6L/3.8L V6', tier:'good', issues:['Pre-2012 3.8L V6 is underpowered but reliable; death-wobble possible on worn suspension'], pick:'2012–17, 3.6L Pentastar', mileage:'Solid to 180k with suspension maintenance'}
+  ]},
+  {brand:'bmw', name:'3 Series', body:'Sedan', msrp:45000, gens:[
+    {label:'G20', y0:2019, y1:2026, engine:'B46/B48 Turbo I4 / B58 Turbo I6 (M340i)', tier:'best', issues:['None major — the strongest reliability record of the three generations here'], pick:'330i (B48)', mileage:'Fine to 150k+ miles'},
+    {label:'F30 (facelift/LCI)', y0:2016, y1:2018, engine:'B48 Turbo I4 (330i)', tier:'best', issues:['Reliability turning point — durable B48 engine, reworked cooling system'], pick:'330i (B48)', mileage:'Strong candidate even past 100k with service records'},
+    {label:'F30 (pre-facelift)', y0:2012, y1:2015, engine:'N20 Turbo I4 (328i)', tier:'caution', issues:['Timing-chain-guide wear, can fail 60k–100k miles — verify service history'], pick:'Confirm chain/guides were done', mileage:'Verify timing-chain service before buying'},
+    {label:'E90/E92', y0:2006, y1:2011, engine:'N52 NA I6 (328i) / N54 Turbo I6 (335i)', tier:'good', issues:['N54 turbo (335i) has high-pressure fuel pump/injector wear by 100k'], pick:'328i (N52)', mileage:'N52 is strong to 180k+ miles'}
+  ]},
+  {brand:'bmw', name:'X5', body:'SUV', msrp:65000, gens:[
+    {label:'G05', y0:2019, y1:2026, engine:'B58 Turbo I6 / 4.4L Turbo V8', tier:'good', issues:['Air-suspension repairs can be costly out of warranty'], pick:'xDrive40i', mileage:'Fine to 150k miles'},
+    {label:'F15', y0:2014, y1:2018, engine:'N55 Turbo I6 / N63 Turbo V8', tier:'caution', issues:['N63 V8 has known high-pressure fuel pump and timing-chain issues'], pick:'xDrive35i (N55)', mileage:'Avoid the N63 V8 without full service records'}
+  ]},
+  {brand:'mercedes', name:'C-Class', body:'Sedan', msrp:46000, gens:[
+    {label:'W206', y0:2022, y1:2026, engine:'2.0L Turbo I4', tier:'good', issues:['Too new for long-term data'], pick:'C300', mileage:'Too new — limited data'},
+    {label:'W205', y0:2015, y1:2021, engine:'2.0L Turbo I4 / 3.0L Turbo V6 (AMG)', tier:'good', issues:['Some 2015–16 models had electrical/infotainment glitches'], pick:'2018–21 facelift', mileage:'Fine to 150k miles'},
+    {label:'W204', y0:2008, y1:2014, engine:'1.8L/3.5L I4-V6 / 3.0L V6', tier:'caution', issues:['Air-suspension and wiring-harness repairs common with age'], pick:'Non-air-suspension trims', mileage:'Budget for suspension/electrical repairs past 80k'}
+  ]},
+  {brand:'mercedes', name:'GLC', body:'SUV', msrp:48000, gens:[
+    {label:'X254', y0:2023, y1:2026, engine:'2.0L Turbo I4', tier:'good', issues:['Too new for long-term data'], pick:'GLC300', mileage:'Too new — limited data'},
+    {label:'X253', y0:2016, y1:2022, engine:'2.0L Turbo I4', tier:'good', issues:['None major'], pick:'2019–22', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'audi', name:'A4', body:'Sedan', msrp:44000, gens:[
+    {label:'B9', y0:2017, y1:2026, engine:'2.0L TFSI Turbo', tier:'good', issues:['Timing-chain risk much reduced versus earlier EA888 generations'], pick:'2020+ facelift', mileage:'Fine to 150k miles'},
+    {label:'B8', y0:2009, y1:2016, engine:'2.0L TFSI Turbo', tier:'caution', issues:['EA888 Gen1/2 timing-chain tensioner failures are a widely known risk'], pick:'Confirm timing-chain service/upgrade was done', mileage:'Verify timing-chain history before buying'}
+  ]},
+  {brand:'audi', name:'Q5', body:'SUV', msrp:47000, gens:[
+    {label:'FY', y0:2018, y1:2026, engine:'2.0L TFSI Turbo', tier:'good', issues:['None major'], pick:'2021+', mileage:'Fine to 150k miles'},
+    {label:'8R', y0:2009, y1:2017, engine:'2.0L TFSI Turbo', tier:'caution', issues:['Same EA888 timing-chain risk as the A4 of this era'], pick:'2015–17 later revisions', mileage:'Verify timing-chain history'}
+  ]},
+  {brand:'vw', name:'Jetta', body:'Sedan', msrp:22000, gens:[
+    {label:'7th gen', y0:2019, y1:2026, engine:'1.4L/1.5L Turbo', tier:'good', issues:['None major'], pick:'SE', mileage:'Fine to 150k miles'},
+    {label:'6th gen', y0:2011, y1:2018, engine:'2.0L TDI Diesel / 1.8T / 2.0T', tier:'caution', issues:['Diesel models were affected by the Dieselgate emissions recall/buyback — verify VIN status'], pick:'1.8T gas models avoid the diesel complications', mileage:'Check diesel VIN against VW emissions settlement records'}
+  ]},
+  {brand:'vw', name:'Tiguan', body:'SUV', msrp:28000, gens:[
+    {label:'2nd gen', y0:2018, y1:2026, engine:'2.0L Turbo', tier:'good', issues:['Water-pump/thermostat wear is a known maintenance item'], pick:'2021+', mileage:'Fine to 150k; budget for the water pump'},
+    {label:'1st gen', y0:2009, y1:2017, engine:'2.0L Turbo', tier:'caution', issues:['Timing-chain tensioner and water-pump issues on earlier EA888 engines'], pick:'2015–17 later revision', mileage:'Verify timing-chain/water-pump history'}
+  ]},
+  {brand:'nissan', name:'Altima', body:'Sedan', msrp:27000, gens:[
+    {label:'6th gen', y0:2019, y1:2026, engine:'2.5L I4 / 2.0L VC-Turbo', tier:'caution', issues:['CVT reliability concerns persist into this generation, though improved'], pick:'2022+ with CVT warranty remaining', mileage:'Verify CVT service/warranty history'},
+    {label:'5th gen', y0:2013, y1:2018, engine:'2.5L I4', tier:'caution', issues:['CVT failures are a widespread, well-documented issue, often by 100k miles'], pick:'Confirm the CVT was replaced or is under warranty', mileage:'Budget for CVT replacement past 100k'}
+  ]},
+  {brand:'nissan', name:'Rogue', body:'SUV', msrp:29000, gens:[
+    {label:'3rd gen', y0:2021, y1:2026, engine:'1.5L VC-Turbo', tier:'good', issues:['New engine design, limited long-term data so far'], pick:'2023+', mileage:'Fine to 120k; data still developing'},
+    {label:'2nd gen', y0:2014, y1:2020, engine:'2.5L I4', tier:'caution', issues:['Shares the CVT reliability concerns common to this era of Nissan'], pick:'Confirm CVT history', mileage:'Budget for CVT risk past 100k'}
+  ]},
+  {brand:'tesla', name:'Model 3', body:'Sedan', msrp:42000, gens:[
+    {label:'Highland', y0:2024, y1:2026, engine:'Dual/Single Motor Electric', tier:'good', issues:['Too new for long-term data'], pick:'Long Range', mileage:'Too new — limited data'},
+    {label:'Original', y0:2017, y1:2023, engine:'Dual/Single Motor Electric', tier:'good', issues:['Early 2017–18 builds had more reported panel/paint fit issues'], pick:'2020+ build', mileage:'Battery typically retains 85%+ capacity past 150k'}
+  ]},
+  {brand:'tesla', name:'Model Y', body:'SUV', msrp:45000, gens:[
+    {label:'Model Y', y0:2020, y1:2026, engine:'Dual/Single Motor Electric', tier:'good', issues:['Panel-gap/paint complaints concentrated in early 2020 builds'], pick:'2021+ build', mileage:'Battery typically retains 85%+ capacity past 150k'}
+  ]},
+  {brand:'volvo', name:'XC60', body:'SUV', msrp:46000, gens:[
+    {label:'2nd gen', y0:2018, y1:2026, engine:'2.0L Turbo (T5) / Turbo+Supercharged (T6)', tier:'good', issues:['Some electrical/infotainment complaints'], pick:'T5 Momentum', mileage:'Fine to 150k with maintenance'},
+    {label:'1st gen', y0:2010, y1:2017, engine:'3.2L I6 / 2.5L Turbo I5', tier:'good', issues:['None major'], pick:'2015–17', mileage:'Solid to 150k miles'}
+  ]},
+  {brand:'porsche', name:'911', body:'Sports', msrp:115000, gens:[
+    {label:'992', y0:2019, y1:2026, engine:'3.0L Turbo Flat-6', tier:'best', issues:['None major'], pick:'Carrera S', mileage:'Fine to 100k+ with maintenance'},
+    {label:'991', y0:2012, y1:2019, engine:'3.4L/3.0L Turbo Flat-6', tier:'best', issues:['IMS bearing risk fully resolved by this generation'], pick:'Any trim', mileage:'Strong to 100k+ with service records'}
+  ]},
+  {brand:'porsche', name:'Cayenne', body:'SUV', msrp:80000, gens:[
+    {label:'9Y0', y0:2018, y1:2026, engine:'3.0L Turbo V6 / Turbo V8', tier:'good', issues:['Air-suspension repairs are costly out of warranty'], pick:'Base V6', mileage:'Fine to 100k with maintenance'},
+    {label:'958', y0:2011, y1:2017, engine:'3.6L V6 / 4.8L V8', tier:'caution', issues:['Air-suspension, coolant-pipe and VarioCam issues reported with age'], pick:'Confirm suspension/coolant history', mileage:'Budget for suspension repairs past 80k'}
+  ]},
+  {brand:'landrover', name:'Range Rover Sport', body:'SUV', msrp:83000, gens:[
+    {label:'L461', y0:2023, y1:2026, engine:'3.0L I6 Turbo / PHEV', tier:'caution', issues:["Too new, but the brand's track record urges caution until data matures"], pick:'Extended warranty strongly recommended', mileage:'Too new — limited data'},
+    {label:'L494', y0:2014, y1:2022, engine:'3.0L/5.0L V6/V8 Supercharged', tier:'avoid', issues:['Air-suspension, electrical and timing-chain complaints are extensive and well documented'], pick:'Only with full service history and an extended warranty', mileage:'High risk of costly repairs past 60k without warranty'}
+  ]},
+  {brand:'landrover', name:'Discovery', body:'SUV', msrp:58000, gens:[
+    {label:'L462', y0:2017, y1:2026, engine:'2.0L/3.0L Turbo I4/I6', tier:'caution', issues:['Electrical and air-suspension complaints are common'], pick:'Extended warranty strongly recommended', mileage:'Budget for electrical/suspension repairs past 60k'}
+  ]}
+];
+
+/* ============== STATE / HELPERS ============== */
+const CURRENT_YEAR = 2026;
+const brandById = id => BRANDS.find(b => b.id === id);
+const modelsForBrand = id => MODELS.filter(m => m.brand === id);
+
+function retainedAtAge(retained5, age){
+  const rate = -Math.log(retained5/100) / 5;
+  return Math.max(0.15, Math.exp(-rate * age));
+}
+const TIER_MULT = {best:1.04, good:1.00, caution:0.93, avoid:0.85};
+
+function fmtMoney(n){ return '$' + Math.round(n).toLocaleString(); }
+function fmtPct(n){ return Math.round(n*100) + '%'; }
+
+/* ============== VIEW ROUTING ============== */
+function goView(name){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+  window.scrollTo({top:0, behavior:'instant'});
+  location.hash = name;
+}
+
+/* ============== BRANDS VIEW ============== */
+function renderBrandGrid(){
+  const grid = document.getElementById('brand-grid');
+  const sorted = [...BRANDS].sort((a,b) => b.score - a.score);
+  grid.innerHTML = sorted.map(b => {
+    const pct = Math.round((b.score/10)*100);
+    let color = 'var(--bad)';
+    if (b.score >= 8.3) color = 'var(--good)';
+    else if (b.score >= 7.0) color = 'var(--info)';
+    else if (b.score >= 6.0) color = 'var(--accent)';
+    return `<div class="card brand-card" onclick="goBrandGuide('${b.id}')">
+      <div class="brand-top">
+        <div class="brand-icon">${b.name[0]}</div>
+        <div><div class="brand-name">${b.name}</div><div class="brand-seg">${b.seg}</div></div>
+      </div>
+      <div class="brand-metrics">
+        <div><div class="metric-lbl">Reliability</div><div class="metric-val" style="color:${color}">${b.score}</div></div>
+        <div style="text-align:right;"><div class="metric-lbl">5-yr value kept</div><div class="metric-val">${b.retained5}%</div></div>
+      </div>
+      <div class="bar"><div style="width:${pct}%; background:${color};"></div></div>
+      <span style="font-size:12.5px; font-weight:600;">View guide →</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('stat-brands').textContent = BRANDS.length;
+  document.getElementById('stat-models').textContent = MODELS.length;
+  document.getElementById('stat-gens').textContent = MODELS.reduce((s,m) => s + m.gens.length, 0);
+}
+
+function goBrandGuide(brandId){
+  goView('guide');
+  document.getElementById('g-brand').value = brandId;
+  onGuideBrandChange();
+}
+
+/* ============== GUIDE VIEW ============== */
+function populateBrandSelect(sel){
+  sel.innerHTML = BRANDS.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+}
+function populateModelSelect(sel, brandId){
+  sel.innerHTML = modelsForBrand(brandId).map((m,i) => `<option value="${i}">${m.name} (${m.body})</option>`).join('');
+}
+function populateGenSelect(sel, model){
+  sel.innerHTML = model.gens.map((g,i) => `<option value="${i}">${g.label} · ${g.y0}–${g.y1===CURRENT_YEAR?'present':g.y1}</option>`).join('');
+}
+
+function onGuideBrandChange(){
+  const brandId = document.getElementById('g-brand').value;
+  populateModelSelect(document.getElementById('g-model'), brandId);
+  onGuideModelChange();
+}
+function onGuideModelChange(){
+  const brandId = document.getElementById('g-brand').value;
+  const model = modelsForBrand(brandId)[document.getElementById('g-model').value];
+  populateGenSelect(document.getElementById('g-gen'), model);
+  renderGuideDetail();
+}
+
+function currentGuideSelection(){
+  const brand = brandById(document.getElementById('g-brand').value);
+  const model = modelsForBrand(brand.id)[document.getElementById('g-model').value];
+  const gen = model.gens[document.getElementById('g-gen').value];
+  return {brand, model, gen};
+}
+
+function renderGuideDetail(){
+  const {brand, model, gen} = currentGuideSelection();
+
+  const bestGens = model.gens.filter(g => g.tier === 'best');
+  const callout = bestGens.length ? `<div class="card best-years-callout">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0; margin-top:2px;"><path d="M12 2l2.6 6.2 6.7.6-5.1 4.4 1.6 6.5L12 16.4 6.2 19.7l1.6-6.5-5.1-4.4 6.7-.6z" stroke="#2FBFA0" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div><div style="font-size:11.5px; font-weight:700; color:var(--good); text-transform:uppercase; letter-spacing:.03em;">Best years to buy</div>
+      <div style="font-size:16.5px; font-weight:700; margin-top:3px; font-family:'Space Grotesk',sans-serif;">${bestGens.map(g=>`${g.label} (${g.y0}–${g.y1===CURRENT_YEAR?'present':g.y1})`).join(' · ')}</div></div>
+    </div>` : '';
+  document.getElementById('guide-best-years').innerHTML = callout;
+
+  const ages = [1,3,5,8];
+  const depBars = ages.map(age => {
+    const pct = retainedAtAge(brand.retained5, age) * TIER_MULT[gen.tier];
+    return `<div class="dep-bar"><div class="pct">${fmtPct(pct)}</div><div class="fill" style="height:${Math.max(6, pct*100)}px;"></div><div class="yr">Year ${age}</div></div>`;
+  }).join('');
+
+  document.getElementById('guide-detail').innerHTML = `
+    <div class="card detail-card">
+      <div class="detail-head">
+        <h3>${brand.name} ${model.name} — ${gen.label}</h3>
+        <span class="pill tier-${gen.tier}">${TIER_LABEL[gen.tier]}</span>
+      </div>
+      <div class="detail-grid">
+        <div><div class="k">Years</div><div class="v">${gen.y0}–${gen.y1===CURRENT_YEAR?'present':gen.y1}</div></div>
+        <div><div class="k">Engine(s)</div><div class="v">${gen.engine}</div></div>
+        <div><div class="k">Recommended pick</div><div class="v">${gen.pick}</div></div>
+        <div><div class="k">Mileage guidance</div><div class="v">${gen.mileage}</div></div>
+      </div>
+      <div style="margin-top:18px;">
+        <div class="k">Known issues</div>
+        <ul class="issues">${gen.issues.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+      <div style="margin-top:22px;">
+        <div class="k">Typical value retained (this brand's pattern, adjusted for this generation)</div>
+        <div class="dep-chart">${depBars}</div>
+      </div>
+    </div>
+    <div class="detail-grid" style="margin-top:18px;">
+      <div class="card" style="padding:20px;">
+        <div class="k" style="color:var(--good);">Brand strengths</div>
+        <ul class="issues">${brand.strengths.map(s=>`<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="card" style="padding:20px;">
+        <div class="k" style="color:var(--warn);">Watch out for (brand-wide)</div>
+        <ul class="issues">${brand.watch.map(s=>`<li>${s}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+}
+
+function sendToDealChecker(){
+  const {brand, model, gen} = currentGuideSelection();
+  goView('deal');
+  document.getElementById('d-brand').value = brand.id;
+  onDealBrandChange();
+  const modelIdx = modelsForBrand(brand.id).indexOf(model);
+  document.getElementById('d-model').value = modelIdx;
+  onDealModelChange();
+  const genIdx = model.gens.indexOf(gen);
+  document.getElementById('d-gen').value = genIdx;
+  onDealGenChange();
+}
+
+/* ============== DEAL CHECKER VIEW ============== */
+function onDealBrandChange(){
+  const brandId = document.getElementById('d-brand').value;
+  populateModelSelect(document.getElementById('d-model'), brandId);
+  onDealModelChange();
+}
+function onDealModelChange(){
+  const brandId = document.getElementById('d-brand').value;
+  const model = modelsForBrand(brandId)[document.getElementById('d-model').value];
+  populateGenSelect(document.getElementById('d-gen'), model);
+  onDealGenChange();
+}
+function onDealGenChange(){
+  const brandId = document.getElementById('d-brand').value;
+  const model = modelsForBrand(brandId)[document.getElementById('d-model').value];
+  const gen = model.gens[document.getElementById('d-gen').value];
+  const yearInput = document.getElementById('d-year');
+  const maxYear = Math.min(gen.y1, CURRENT_YEAR);
+  yearInput.min = gen.y0; yearInput.max = maxYear; yearInput.value = maxYear;
+  document.getElementById('deal-result').classList.remove('show');
+}
+
+function checkDeal(){
+  const brand = brandById(document.getElementById('d-brand').value);
+  const model = modelsForBrand(brand.id)[document.getElementById('d-model').value];
+  const gen = model.gens[document.getElementById('d-gen').value];
+  const year = Number(document.getElementById('d-year').value);
+  const mileage = Number(document.getElementById('d-mileage').value);
+  const price = Number(document.getElementById('d-price').value);
+
+  const age = Math.max(0, CURRENT_YEAR - year);
+  const retained = retainedAtAge(brand.retained5, age) * TIER_MULT[gen.tier];
+  const expectedMileage = age * 12000;
+  const diff = mileage - expectedMileage;
+  let adj = diff > 0 ? -(diff/1000)*0.0025 : (-diff/1000)*0.0018;
+  adj = Math.max(-0.15, Math.min(0.15, adj));
+
+  const fairValue = model.msrp * retained * (1 + adj);
+  const low = fairValue * 0.93;
+  const high = fairValue * 1.07;
+
+  let verdict, color, bg;
+  if (price < low * 0.7) { verdict = 'Check Carefully'; color = 'var(--info)'; bg = 'rgba(90,169,230,0.14)'; }
+  else if (price <= low) { verdict = 'Great Deal'; color = 'var(--good)'; bg = 'rgba(47,191,160,0.14)'; }
+  else if (price <= high) { verdict = 'Fair Deal'; color = 'var(--accent)'; bg = 'rgba(242,169,59,0.14)'; }
+  else { verdict = 'Overpriced'; color = 'var(--bad)'; bg = 'rgba(226,80,76,0.14)'; }
+
+  const pill = document.getElementById('verdict-pill');
+  pill.textContent = verdict;
+  pill.style.color = color;
+  pill.style.background = bg;
+
+  const diffAmt = Math.round(price - fairValue);
+  document.getElementById('verdict-diff').textContent = diffAmt >= 0
+    ? `${fmtMoney(Math.abs(diffAmt))} above estimated fair value`
+    : `${fmtMoney(Math.abs(diffAmt))} below estimated fair value`;
+
+  document.getElementById('verdict-range').textContent = `${fmtMoney(low)} – ${fmtMoney(high)}`;
+  document.getElementById('verdict-expected-mi').textContent = `${Math.round(expectedMileage).toLocaleString()} mi`;
+
+  let note = `${brand.name} ${model.name} (${gen.label}) is rated "${TIER_LABEL[gen.tier]}" for this generation.`;
+  if (gen.tier === 'caution' || gen.tier === 'avoid') {
+    note += ` Known issue to budget for: ${gen.issues[0]}`;
+  }
+  document.getElementById('verdict-note').textContent = note;
+
+  document.getElementById('deal-result').classList.add('show');
+}
+
+/* ============== INIT ============== */
+function init(){
+  renderBrandGrid();
+  populateBrandSelect(document.getElementById('g-brand'));
+  populateBrandSelect(document.getElementById('d-brand'));
+  onGuideBrandChange();
+  onDealBrandChange();
+
+  const startView = (location.hash || '#brands').replace('#','');
+  goView(['brands','guide','deal'].includes(startView) ? startView : 'brands');
+}
+init();
+</script>
+</body>
+</html>
