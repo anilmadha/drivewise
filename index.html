@@ -97,6 +97,49 @@
   .tag-foot .kept b{display:block; color:var(--paper); font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;}
   .tag-foot .go{font-size:12px; color:var(--ink-dim); display:flex; align-items:center; gap:5px;}
   .tag-card:hover .tag-foot .go{color:var(--amber);}
+  .tag-bodies{display:flex; gap:7px; margin-top:13px;}
+  .vicon-chip{display:flex; align-items:center; justify-content:center; width:28px; height:20px; color:var(--ink-faint); background:var(--surface-2); border:1px solid var(--border);}
+  .vicon-chip svg{width:19px; height:auto; display:block;}
+
+  /* ===== VEHICLE ICONS ===== */
+  .vicon{display:block;}
+
+  /* ===== HERO GRAPHIC ===== */
+  .hero-grid{display:flex; align-items:center; justify-content:space-between; gap:40px;}
+  .hero-copy{flex:1; min-width:0;}
+  .hero-art{flex:none; display:flex; flex-direction:column; align-items:center; gap:16px; animation:heroArtIn .9s cubic-bezier(.16,1,.3,1) both; animation-delay:.15s;}
+  .hero-art .gauge .readout b{font-size:30px;}
+  .hero-art .gauge .readout span{font-size:10px;}
+  .hero-dial-label{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; text-align:center;}
+  .hero-icon-row{display:flex; gap:8px;}
+  .hero-icon-row .vicon-chip{width:32px; height:24px; color:var(--ink-dim);}
+  .hero-icon-row .vicon-chip svg{width:22px;}
+  @keyframes heroArtIn{from{opacity:0; transform:translateY(16px) scale(.94);} to{opacity:1; transform:translateY(0) scale(1);}}
+  .glow-arc{animation:glowPulse 2.8s ease-in-out infinite;}
+  @keyframes glowPulse{0%,100%{filter:drop-shadow(0 0 0px var(--amber));} 50%{filter:drop-shadow(0 0 7px var(--amber));}}
+  @media(max-width:880px){ .hero-art{display:none;} }
+
+  /* ===== FILTER CHIPS ===== */
+  .chip-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .chip{background:var(--surface-2); border:1px solid var(--border-2); color:var(--ink-dim); font-size:12.5px; font-weight:600; padding:8px 14px; display:flex; align-items:center; gap:7px;}
+  .chip svg{width:16px; height:auto; display:block;}
+  .chip:hover{color:var(--paper); border-color:var(--ink-dim);}
+  .chip.active{background:var(--amber); color:var(--amber-ink); border-color:var(--amber);}
+  .search-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-bottom:4px;}
+  .search-row input{max-width:300px;}
+  .model-count{font-size:12.5px; color:var(--ink-faint); white-space:nowrap;}
+
+  /* ===== MODEL GRID ===== */
+  .model-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-top:18px;}
+  .model-card{background:var(--surface); border:1px solid var(--border); padding:14px; display:flex; gap:12px; align-items:flex-start; cursor:pointer; transition:border-color .15s, transform .15s;}
+  .model-card:hover{border-color:var(--amber); transform:translateY(-2px);}
+  .model-card-icon{flex:none; width:40px; height:40px; display:flex; align-items:center; justify-content:center; background:var(--surface-2); border:1px solid var(--border-2); color:var(--ink-dim);}
+  .model-card-icon .vicon{width:26px;}
+  .model-card-body{min-width:0; flex:1;}
+  .model-card-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .model-card-brand{font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em;}
+  .model-card-name{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:17px; margin-top:2px;}
+  .model-card-meta{font-size:11.5px; color:var(--ink-faint); margin-top:3px;}
 
   /* ===== DETAIL / GUIDE ===== */
   .detail-card{background:var(--surface); border:1px solid var(--border); padding:26px;}
@@ -158,7 +201,7 @@
     .dep-strip{grid-template-columns:repeat(4,1fr);}
     nav.tabs button{padding:8px 11px; font-size:12px;}
   }
-  @media (prefers-reduced-motion: reduce){ *{transition:none !important; scroll-behavior:auto !important;} }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important; scroll-behavior:auto !important;} }
 </style>
 </head>
 <body>
@@ -171,6 +214,7 @@
     </button>
     <nav class="tabs">
       <button data-view="brands" class="active" onclick="goView('brands')">Brands</button>
+      <button data-view="models" onclick="goView('models')">All Models</button>
       <button data-view="guide" onclick="goView('guide')">Model Guide</button>
       <button data-view="deal" onclick="goView('deal')">Deal Checker</button>
     </nav>
@@ -179,15 +223,18 @@
 
 <div class="view active" id="view-brands">
   <div class="hero">
-    <div class="wrap">
-      <span class="tag-badge">21 brands inspected · data through 2026 model year</span>
-      <h1>Buy the right car.<br>Not just a car.</h1>
-      <p>Reliability by brand and generation, real depreciation curves, and the best years to buy — for every major brand sold in the US. Then check if the car you found is priced fairly.</p>
-      <div class="odo-row">
-        <div class="odo"><b class="mono" id="stat-brands">21</b><span>Brands tracked</span></div>
-        <div class="odo"><b class="mono" id="stat-models">40</b><span>Models covered</span></div>
-        <div class="odo"><b class="mono" id="stat-gens">86</b><span>Generations detailed</span></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="tag-badge" id="hero-badge">brands inspected · data through 2026 model year</span>
+        <h1>Buy the right car.<br>Not just a car.</h1>
+        <p>Reliability by brand and generation, real depreciation curves, and the best years to buy — for every major brand sold in the US. Then check if the car you found is priced fairly.</p>
+        <div class="odo-row">
+          <div class="odo"><b class="mono" id="stat-brands">21</b><span>Brands tracked</span></div>
+          <div class="odo"><b class="mono" id="stat-models">40</b><span>Models covered</span></div>
+          <div class="odo"><b class="mono" id="stat-gens">86</b><span>Generations detailed</span></div>
+        </div>
       </div>
+      <div class="hero-art" id="hero-art"></div>
     </div>
   </div>
   <div class="wrap">
@@ -197,6 +244,23 @@
         <p>Reliability dial (0–10) and typical value kept after 5 years, from each brand's known-issue history.</p>
       </div>
       <div class="brand-grid" id="brand-grid"></div>
+    </section>
+  </div>
+</div>
+
+<div class="view" id="view-models">
+  <div class="wrap">
+    <section>
+      <div class="section-head">
+        <h2>Every model we track</h2>
+        <p>Search or filter by body style to browse the full lineup, then open any one for its generation-by-generation guide.</p>
+      </div>
+      <div class="search-row">
+        <input type="text" id="model-search" placeholder="Search by model or brand…" oninput="setModelQuery(this.value)">
+        <div class="model-count"><span id="model-count">0</span> models shown</div>
+      </div>
+      <div class="chip-row" id="chip-row"></div>
+      <div class="model-grid" id="model-grid"></div>
     </section>
   </div>
 </div>
@@ -357,7 +421,34 @@ const BRANDS = [
     watch:['IMS bearing risk on 2000–2008 engines (resolved by 2009+)','Maintenance and parts costs are high regardless of age']},
   {id:'landrover', name:'Land Rover', seg:'Luxury', score:4.8, retained5:33, upkeep:1550,
     strengths:['Off-road capability (Range Rover/Discovery) is among the best in class','Interior luxury and presence are segment-leading'],
-    watch:['Air-suspension/electrical complaints are the most-reported of any luxury brand','Timing-chain tensioner issues on early Ingenium/JLR V6-V8 engines']}
+    watch:['Air-suspension/electrical complaints are the most-reported of any luxury brand','Timing-chain tensioner issues on early Ingenium/JLR V6-V8 engines']},
+  {id:'acura', name:'Acura', seg:'Luxury', score:7.6, retained5:46, upkeep:700,
+    strengths:['Shares Honda\'s durable naturally-aspirated and VTEC engine architecture','SH-AWD is a genuinely effective, well-engineered all-wheel-drive system'],
+    watch:['Some 2016–20 models had 10-speed automatic shift-quality complaints','Infotainment (dual-screen) on 2014–20 models feels dated and can be glitchy']},
+  {id:'infiniti', name:'Infiniti', seg:'Luxury', score:5.8, retained5:36, upkeep:780,
+    strengths:['VQ-series V6 engines share Nissan\'s reputation for smooth, durable power','Strong value versus German rivals for the content offered'],
+    watch:['CVT reliability issues are shared with parent-company Nissan on several models','Resale value drops faster than German or Japanese luxury rivals']},
+  {id:'cadillac', name:'Cadillac', seg:'Luxury', score:6.0, retained5:38, upkeep:950,
+    strengths:['Full-size SUVs share GM\'s proven truck platform and V8 lineup','Magnetic Ride Control suspension is well regarded when in good condition'],
+    watch:['Same AFM lifter risk as Chevrolet/GMC on shared 5.3L/6.2L V8 engines','CUE infotainment (2013–19) was widely criticized for lag and reliability']},
+  {id:'buick', name:'Buick', seg:'Mainstream', score:6.7, retained5:42, upkeep:620,
+    strengths:['Rides on the same mechanicals as Chevrolet/GMC with a quieter, more isolated cabin','Strong J.D. Power dependability scores for a mainstream-priced brand'],
+    watch:['Smaller dealer network than Chevrolet can mean longer wait times for parts','Some turbocharged 4-cylinders have reported minor oil-consumption complaints']},
+  {id:'genesis', name:'Genesis', seg:'Luxury', score:7.3, retained5:41, upkeep:680,
+    strengths:['Shares Hyundai\'s class-leading factory warranty coverage','Strong early J.D. Power quality and dependability scores for a new luxury brand'],
+    watch:['Smaller dealer network than established luxury rivals','Limited high-mileage data since the brand only launched in 2015']},
+  {id:'mini', name:'Mini', seg:'Luxury', score:5.5, retained5:34, upkeep:900,
+    strengths:['Go-kart handling and distinctive styling are genuinely unique in the segment','Later (BMW B38/B46-based) engines are more durable than early-2000s units'],
+    watch:['Timing-chain tensioner wear is a known risk on 2007–15 turbo engines (N14/N18)','Electrical gremlins and premature water-pump failure are common complaints']},
+  {id:'mitsubishi', name:'Mitsubishi', seg:'Mainstream', score:5.7, retained5:33, upkeep:520,
+    strengths:['CVT and engines are generally simple and inexpensive to maintain','Among the lowest purchase prices in the mainstream segment'],
+    watch:['Smallest dealer and parts network of any mainstream brand sold in the US','CVT reliability and long-term durability trail most competitors']},
+  {id:'dodge', name:'Dodge', seg:'Mainstream', score:5.8, retained5:39, upkeep:680,
+    strengths:['Hemi V8s (Charger/Durango) are proven, durable, and easy to service','Strong straight-line performance for the price across the lineup'],
+    watch:['Electrical gremlins and infotainment glitches are commonly reported','8-speed automatic (ZF-sourced) can have early shift-quality complaints']},
+  {id:'chrysler', name:'Chrysler', seg:'Mainstream', score:5.5, retained5:34, upkeep:700,
+    strengths:['Pacifica\'s Stow \'n Go seating is a genuinely useful, class-unique feature','Pentastar V6 is a reasonably durable, well-proven engine'],
+    watch:['9-speed automatic (2014–19) had widely reported rough-shift complaints','Electrical and sliding-door sensor issues are common on Pacifica']}
 ];
 
 const TIER_LABEL = {best:'Best Pick', good:'Solid Choice', caution:'Buy With Care', avoid:'High Risk'};
@@ -677,6 +768,276 @@ const MODELS = [
   ]},
   {brand:'landrover', name:'Defender', body:'SUV', msrp:62000, gens:[
     {label:'L663', y0:2020, y1:2026, engine:'2.0L/3.0L Turbo I4/I6', tier:'caution', issues:['Electrical and infotainment complaints reported, improving with updates'], pick:'2022+', mileage:'Extended warranty strongly recommended'}
+  ]},
+  {brand:'landrover', name:'Range Rover Evoque', body:'SUV', msrp:48000, gens:[
+    {label:'2nd gen', y0:2020, y1:2026, engine:'2.0L Turbo I4', tier:'avoid', issues:['Electrical and infotainment complaints are extensive, even for the brand'], pick:'Extended warranty strongly recommended', mileage:'High risk of costly repairs past 50k without warranty'}
+  ]},
+
+  {brand:'toyota', name:'Tundra', body:'Truck', msrp:46000, gens:[
+    {label:'3rd gen', y0:2022, y1:2026, engine:'3.5L Twin-Turbo V6 / Hybrid', tier:'good', issues:['Some early (2022) builds had reported frame and paint-quality complaints'], pick:'2023+', mileage:'Fine to 150k; limited high-mileage data on the new engine'},
+    {label:'2nd gen', y0:2007, y1:2021, engine:'4.6L/5.7L V8', tier:'best', issues:['None major'], pick:'5.7L V8', mileage:'Routinely exceeds 250k miles'}
+  ]},
+  {brand:'toyota', name:'Sienna', body:'Minivan', msrp:38000, gens:[
+    {label:'4th gen', y0:2021, y1:2026, engine:'2.5L Hybrid', tier:'best', issues:['None major'], pick:'XLE', mileage:'Fine well past 150k miles'},
+    {label:'3rd gen', y0:2011, y1:2020, engine:'3.5L V6', tier:'best', issues:['None major'], pick:'Any trim', mileage:'Strong to 200k+ miles'}
+  ]},
+  {brand:'toyota', name:'Prius', body:'Hatchback', msrp:28000, gens:[
+    {label:'5th gen', y0:2023, y1:2026, engine:'2.0L Hybrid', tier:'best', issues:['None major'], pick:'LE', mileage:'Fine well past 150k miles'},
+    {label:'4th gen', y0:2016, y1:2022, engine:'1.8L Hybrid', tier:'best', issues:['None major — hybrid battery packs routinely outlast the car'], pick:'Any trim', mileage:'Routinely exceeds 200k miles'}
+  ]},
+  {brand:'toyota', name:'Sequoia', body:'SUV', msrp:60000, gens:[
+    {label:'3rd gen', y0:2023, y1:2026, engine:'3.5L Twin-Turbo Hybrid V6', tier:'good', issues:['Too new for long-term data'], pick:'Limited', mileage:'Too new — limited data'},
+    {label:'2nd gen', y0:2008, y1:2022, engine:'5.7L V8', tier:'best', issues:['None major'], pick:'Any trim', mileage:'Routinely exceeds 220k miles'}
+  ]},
+  {brand:'toyota', name:'GR86', body:'Coupe', msrp:30000, gens:[
+    {label:'2nd gen', y0:2022, y1:2026, engine:'2.4L Flat-4', tier:'good', issues:['None major'], pick:'Premium, manual', mileage:'Fine to 120k with maintenance'}
+  ]},
+
+  {brand:'lexus', name:'IS', body:'Sedan', msrp:42000, gens:[
+    {label:'3rd gen', y0:2014, y1:2026, engine:'2.0L Turbo / 3.5L V6', tier:'best', issues:['None major'], pick:'IS350', mileage:'Fine to 180k+ miles'}
+  ]},
+  {brand:'lexus', name:'LX', body:'SUV', msrp:90000, gens:[
+    {label:'3rd gen', y0:2008, y1:2021, engine:'5.7L V8', tier:'best', issues:['None major — Land Cruiser platform'], pick:'Any trim', mileage:'Routinely exceeds 220k miles'}
+  ]},
+  {brand:'lexus', name:'UX', body:'Hatchback', msrp:35000, gens:[
+    {label:'1st gen', y0:2019, y1:2026, engine:'2.0L I4 / Hybrid', tier:'best', issues:['None major'], pick:'UX250h', mileage:'Fine to 150k+ miles'}
+  ]},
+
+  {brand:'honda', name:'HR-V', body:'SUV', msrp:26000, gens:[
+    {label:'2nd gen', y0:2023, y1:2026, engine:'2.0L I4', tier:'good', issues:['None major'], pick:'EX-L', mileage:'Fine to 150k miles'},
+    {label:'1st gen', y0:2016, y1:2022, engine:'1.8L I4', tier:'best', issues:['None major'], pick:'Any trim', mileage:'Strong to 180k+ miles'}
+  ]},
+  {brand:'honda', name:'Passport', body:'SUV', msrp:40000, gens:[
+    {label:'1st gen', y0:2019, y1:2026, engine:'3.5L V6', tier:'good', issues:['Some reported 9/10-speed transmission shudder, similar to Pilot/Odyssey'], pick:'EX-L', mileage:'Fine to 180k miles'}
+  ]},
+  {brand:'honda', name:'Ridgeline', body:'Truck', msrp:42000, gens:[
+    {label:'2nd gen', y0:2017, y1:2026, engine:'3.5L V6', tier:'best', issues:['None major'], pick:'RTL-E', mileage:'Strong to 200k+ miles'}
+  ]},
+  {brand:'honda', name:'Insight', body:'Sedan', msrp:26000, gens:[
+    {label:'3rd gen', y0:2019, y1:2022, engine:'1.5L Hybrid', tier:'best', issues:['None major'], pick:'Touring', mileage:'Fine well past 150k miles'}
+  ]},
+
+  {brand:'mazda', name:'CX-50', body:'SUV', msrp:32000, gens:[
+    {label:'1st gen', y0:2023, y1:2026, engine:'2.5L I4 / Turbo', tier:'good', issues:['Too new for long-term data'], pick:'2.5L Turbo', mileage:'Too new — limited data'}
+  ]},
+  {brand:'mazda', name:'MX-5 Miata', body:'Convertible', msrp:29000, gens:[
+    {label:'ND', y0:2016, y1:2026, engine:'2.0L I4', tier:'best', issues:['None major'], pick:'Club, manual', mileage:'Fine to 150k+ miles with maintenance'}
+  ]},
+
+  {brand:'subaru', name:'Legacy', body:'Sedan', msrp:28000, gens:[
+    {label:'7th gen', y0:2020, y1:2026, engine:'2.5L I4 / 2.4L Turbo', tier:'good', issues:['CVT concerns similar to Outback, improved after 2021'], pick:'2.5L naturally aspirated', mileage:'Fine to 150k; favor the non-turbo'}
+  ]},
+  {brand:'subaru', name:'BRZ', body:'Coupe', msrp:31000, gens:[
+    {label:'2nd gen', y0:2022, y1:2026, engine:'2.4L Flat-4', tier:'good', issues:['None major'], pick:'Limited, manual', mileage:'Fine to 120k with maintenance'}
+  ]},
+  {brand:'subaru', name:'Impreza', body:'Hatchback', msrp:24000, gens:[
+    {label:'5th gen', y0:2017, y1:2026, engine:'2.0L I4', tier:'good', issues:['CVT concerns similar to other recent Subarus'], pick:'Premium', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'hyundai', name:'Venue', body:'SUV', msrp:21000, gens:[
+    {label:'1st gen', y0:2020, y1:2026, engine:'1.6L I4', tier:'good', issues:['None major'], pick:'SEL', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'hyundai', name:'Kona', body:'SUV', msrp:24000, gens:[
+    {label:'2nd gen', y0:2024, y1:2026, engine:'2.0L I4 / Electric', tier:'good', issues:['Too new for long-term data'], pick:'Limited', mileage:'Too new — limited data'},
+    {label:'1st gen', y0:2018, y1:2023, engine:'2.0L I4 / 1.6L Turbo', tier:'good', issues:['None major on gas models'], pick:'2.0L SEL', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'hyundai', name:'Ioniq 5', body:'SUV', msrp:44000, gens:[
+    {label:'1st gen', y0:2022, y1:2026, engine:'Electric (58/77.4 kWh)', tier:'good', issues:['Too new for long-term battery-degradation data'], pick:'SEL Long Range', mileage:'Too new — limited data'}
+  ]},
+  {brand:'hyundai', name:'Accent', body:'Sedan', msrp:19000, gens:[
+    {label:'5th gen', y0:2018, y1:2022, engine:'1.6L I4', tier:'good', issues:['None major'], pick:'SEL', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'kia', name:'Seltos', body:'SUV', msrp:25000, gens:[
+    {label:'1st gen', y0:2021, y1:2026, engine:'2.0L/1.6L Turbo I4', tier:'good', issues:['None major'], pick:'2.0L EX', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'kia', name:'Niro', body:'SUV', msrp:28000, gens:[
+    {label:'2nd gen', y0:2023, y1:2026, engine:'1.6L Hybrid / Electric', tier:'good', issues:['None major'], pick:'Hybrid', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'kia', name:'EV6', body:'SUV', msrp:48000, gens:[
+    {label:'1st gen', y0:2022, y1:2026, engine:'Electric (58/77.4 kWh)', tier:'good', issues:['Too new for long-term battery-degradation data'], pick:'Wind Long Range', mileage:'Too new — limited data'}
+  ]},
+  {brand:'kia', name:'Forte', body:'Sedan', msrp:21000, gens:[
+    {label:'3rd gen', y0:2019, y1:2026, engine:'2.0L I4', tier:'good', issues:['None major'], pick:'LXS', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'ford', name:'Bronco', body:'SUV', msrp:40000, gens:[
+    {label:'6th gen', y0:2021, y1:2026, engine:'2.3L/2.7L EcoBoost', tier:'caution', issues:['Early (2021) build quality complaints — head gasket and MIC leak recalls were issued'], pick:'2022+ post-recall', mileage:'Verify recall work before buying'}
+  ]},
+  {brand:'ford', name:'Ranger', body:'Truck', msrp:34000, gens:[
+    {label:'2nd gen (US)', y0:2019, y1:2026, engine:'2.3L EcoBoost / 2.7L EcoBoost V6', tier:'good', issues:['None major'], pick:'XLT 4x4', mileage:'Fine to 150k+ miles'}
+  ]},
+  {brand:'ford', name:'Edge', body:'SUV', msrp:38000, gens:[
+    {label:'2nd gen', y0:2015, y1:2023, engine:'2.0L/2.7L EcoBoost', tier:'good', issues:['Some reported transmission hesitation on early builds'], pick:'2019+', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'ford', name:'Expedition', body:'SUV', msrp:56000, gens:[
+    {label:'4th gen', y0:2018, y1:2026, engine:'3.5L EcoBoost V6', tier:'good', issues:['Some reported transmission harshness and water-pump-in-valley-vee repairs'], pick:'2021+', mileage:'Fine to 150k miles with maintenance'}
+  ]},
+
+  {brand:'chevrolet', name:'Trailblazer', body:'SUV', msrp:26000, gens:[
+    {label:'1st gen (modern)', y0:2021, y1:2026, engine:'1.2L/1.3L Turbo I3', tier:'good', issues:['Small-displacement turbo is new to the lineup; limited long-term data'], pick:'1.3L Turbo', mileage:'Fine to 120k; data still developing'}
+  ]},
+  {brand:'chevrolet', name:'Blazer', body:'SUV', msrp:38000, gens:[
+    {label:'1st gen (modern)', y0:2019, y1:2026, engine:'2.0L Turbo / 3.6L V6', tier:'good', issues:['None major'], pick:'3.6L V6 RS', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'chevrolet', name:'Colorado', body:'Truck', msrp:38000, gens:[
+    {label:'3rd gen', y0:2023, y1:2026, engine:'2.7L Turbo I4', tier:'good', issues:['Too new for long-term data'], pick:'Z71', mileage:'Too new — limited data'},
+    {label:'2nd gen', y0:2015, y1:2022, engine:'2.5L I4 / 3.6L V6 / 2.8L Duramax', tier:'good', issues:['None major'], pick:'3.6L V6 or Duramax', mileage:'Fine to 180k miles'}
+  ]},
+  {brand:'chevrolet', name:'Suburban', body:'SUV', msrp:62000, gens:[
+    {label:'T1', y0:2021, y1:2026, engine:'5.3L/6.2L V8 / 3.0L Duramax', tier:'good', issues:['Same AFM lifter risk as Silverado/Tahoe on the gas V8s'], pick:'3.0L Duramax', mileage:'Check for lifter-tick before buying a gas V8'}
+  ]},
+  {brand:'chevrolet', name:'Camaro', body:'Coupe', msrp:38000, gens:[
+    {label:'6th gen', y0:2016, y1:2024, engine:'2.0L Turbo / 3.6L V6 / 6.2L V8', tier:'good', issues:['None major'], pick:'SS, manual', mileage:'Fine to 120k with maintenance'}
+  ]},
+
+  {brand:'gmc', name:'Canyon', body:'Truck', msrp:40000, gens:[
+    {label:'3rd gen', y0:2023, y1:2026, engine:'2.7L Turbo I4', tier:'good', issues:['Too new for long-term data'], pick:'AT4', mileage:'Too new — limited data'},
+    {label:'2nd gen', y0:2015, y1:2022, engine:'2.5L I4 / 3.6L V6 / 2.8L Duramax', tier:'good', issues:['None major'], pick:'3.6L V6 or Duramax', mileage:'Fine to 180k miles'}
+  ]},
+
+  {brand:'jeep', name:'Renegade', body:'SUV', msrp:28000, gens:[
+    {label:'1st gen', y0:2015, y1:2023, engine:'1.3L Turbo / 2.4L I4', tier:'caution', issues:['9-speed automatic shift-quality complaints shared with the Cherokee'], pick:'2019+', mileage:'Verify transmission service history'}
+  ]},
+  {brand:'jeep', name:'Gladiator', body:'Truck', msrp:42000, gens:[
+    {label:'JT', y0:2020, y1:2026, engine:'3.6L V6 / 3.0L EcoDiesel', tier:'good', issues:['Death-wobble steering complaints shared with the Wrangler platform'], pick:'3.6L V6, Sport/Overland', mileage:'Fine to 150k; favor the V6'}
+  ]},
+
+  {brand:'bmw', name:'X1', body:'SUV', msrp:40000, gens:[
+    {label:'U11', y0:2023, y1:2026, engine:'B48 Turbo I4', tier:'good', issues:['Too new for long-term data'], pick:'xDrive28i', mileage:'Too new — limited data'},
+    {label:'F48', y0:2016, y1:2022, engine:'B38/B46 Turbo I3/I4', tier:'good', issues:['None major'], pick:'xDrive28i', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'bmw', name:'4 Series', body:'Coupe', msrp:48000, gens:[
+    {label:'G22', y0:2021, y1:2026, engine:'B48 Turbo I4 / B58 Turbo I6', tier:'good', issues:['None major'], pick:'430i (B48)', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'bmw', name:'7 Series', body:'Sedan', msrp:95000, gens:[
+    {label:'G70', y0:2023, y1:2026, engine:'B58 Turbo I6 / 4.4L Turbo V8', tier:'good', issues:['Too new for long-term data'], pick:'740i', mileage:'Too new — limited data'},
+    {label:'G11', y0:2016, y1:2022, engine:'3.0L Turbo I6 / 4.4L Turbo V8', tier:'good', issues:['Air-suspension repairs can be costly out of warranty'], pick:'740i', mileage:'Fine to 150k with maintenance'}
+  ]},
+
+  {brand:'mercedes', name:'S-Class', body:'Sedan', msrp:115000, gens:[
+    {label:'W223', y0:2021, y1:2026, engine:'3.0L Turbo I6 / 4.0L Turbo V8', tier:'good', issues:['Complex air-suspension and driver-assist electronics are costly out of warranty'], pick:'S500', mileage:'Fine to 150k with maintenance'}
+  ]},
+  {brand:'mercedes', name:'GLA', body:'SUV', msrp:40000, gens:[
+    {label:'2nd gen', y0:2021, y1:2026, engine:'2.0L Turbo I4', tier:'good', issues:['None major'], pick:'GLA250', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'audi', name:'A3', body:'Hatchback', msrp:38000, gens:[
+    {label:'2nd gen (US)', y0:2022, y1:2026, engine:'2.0L TFSI Turbo', tier:'good', issues:['None major'], pick:'Premium', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'audi', name:'Q3', body:'SUV', msrp:40000, gens:[
+    {label:'2nd gen', y0:2019, y1:2026, engine:'2.0L TFSI Turbo', tier:'good', issues:['None major'], pick:'Premium Plus', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'vw', name:'Passat', body:'Sedan', msrp:28000, gens:[
+    {label:'NMS', y0:2012, y1:2022, engine:'1.8T/2.0T I4 / 3.6L VR6', tier:'good', issues:['Diesel variants were affected by the Dieselgate emissions recall — verify VIN status'], pick:'1.8T gas model', mileage:'Solid to 170k miles'}
+  ]},
+  {brand:'vw', name:'ID.4', body:'SUV', msrp:42000, gens:[
+    {label:'1st gen', y0:2021, y1:2026, engine:'Electric (62/82 kWh)', tier:'caution', issues:['Infotainment and software glitches widely reported on early builds'], pick:'2023+ post-update', mileage:'Too new — limited data'}
+  ]},
+
+  {brand:'nissan', name:'Murano', body:'SUV', msrp:38000, gens:[
+    {label:'3rd gen', y0:2015, y1:2026, engine:'3.5L V6', tier:'caution', issues:['CVT reliability concerns shared with the rest of the Nissan lineup'], pick:'Confirm CVT service history', mileage:'Budget for CVT risk past 100k'}
+  ]},
+  {brand:'nissan', name:'Frontier', body:'Truck', msrp:36000, gens:[
+    {label:'2nd gen (D41)', y0:2022, y1:2026, engine:'3.8L V6', tier:'good', issues:['None major'], pick:'SV 4x4', mileage:'Fine to 150k+ miles'},
+    {label:'1st gen (D40)', y0:2005, y1:2021, engine:'4.0L V6', tier:'best', issues:['None major'], pick:'Any trim', mileage:'Routinely exceeds 220k miles'}
+  ]},
+  {brand:'nissan', name:'Maxima', body:'Sedan', msrp:40000, gens:[
+    {label:'8th gen', y0:2016, y1:2023, engine:'3.5L V6', tier:'good', issues:['Conventional automatic, avoiding the CVT reliability concerns of other Nissans'], pick:'SV', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'tesla', name:'Model X', body:'SUV', msrp:90000, gens:[
+    {label:'Refresh', y0:2021, y1:2026, engine:'Dual/Tri Motor Electric', tier:'caution', issues:['Falcon-wing door sensors/mechanisms are a documented repair item'], pick:'Long Range', mileage:'Battery typically retains 85%+ capacity past 150k'}
+  ]},
+
+  {brand:'volvo', name:'XC40', body:'SUV', msrp:40000, gens:[
+    {label:'1st gen', y0:2019, y1:2026, engine:'2.0L Turbo (T4/T5) / Electric', tier:'good', issues:['Some electrical/infotainment complaints'], pick:'T5 Momentum', mileage:'Fine to 150k with maintenance'}
+  ]},
+
+  {brand:'porsche', name:'Taycan', body:'Sedan', msrp:95000, gens:[
+    {label:'1st gen', y0:2020, y1:2026, engine:'Electric (79/93 kWh)', tier:'good', issues:['Some reported 12V battery and charging-software complaints'], pick:'4S', mileage:'Too new for long-term battery data'}
+  ]},
+
+  {brand:'acura', name:'MDX', body:'SUV', msrp:52000, gens:[
+    {label:'4th gen', y0:2022, y1:2026, engine:'3.5L V6', tier:'good', issues:['None major'], pick:'Technology', mileage:'Fine to 180k miles'},
+    {label:'3rd gen', y0:2014, y1:2021, engine:'3.5L V6', tier:'good', issues:['Some 9/10-speed transmission shift-quality complaints'], pick:'2018+', mileage:'Solid to 180k miles'}
+  ]},
+  {brand:'acura', name:'RDX', body:'SUV', msrp:44000, gens:[
+    {label:'3rd gen', y0:2019, y1:2026, engine:'2.0L Turbo', tier:'good', issues:['None major'], pick:'Technology', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'acura', name:'TLX', body:'Sedan', msrp:40000, gens:[
+    {label:'2nd gen', y0:2021, y1:2026, engine:'2.0L Turbo / 3.0L Turbo V6', tier:'good', issues:['None major'], pick:'Technology', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'acura', name:'Integra', body:'Hatchback', msrp:32000, gens:[
+    {label:'5th gen', y0:2023, y1:2026, engine:'1.5L Turbo', tier:'good', issues:['Too new for long-term data'], pick:'A-Spec, manual', mileage:'Too new — limited data'}
+  ]},
+
+  {brand:'infiniti', name:'QX60', body:'SUV', msrp:48000, gens:[
+    {label:'2nd gen', y0:2022, y1:2026, engine:'2.5L VC-Turbo', tier:'good', issues:['Conventional 9-speed automatic, avoiding CVT concerns'], pick:'Luxe', mileage:'Fine to 150k; limited long-term data'},
+    {label:'1st gen', y0:2014, y1:2020, engine:'3.5L V6', tier:'caution', issues:['CVT reliability concerns shared with Nissan Murano/Pathfinder of this era'], pick:'Confirm CVT service history', mileage:'Budget for CVT risk past 100k'}
+  ]},
+  {brand:'infiniti', name:'Q50', body:'Sedan', msrp:42000, gens:[
+    {label:'1st gen', y0:2014, y1:2026, engine:'3.0L Twin-Turbo V6 / 2.0L Turbo', tier:'good', issues:['Some reported electrical/sensor complaints on drive-by-wire steering trims'], pick:'3.0t Luxe', mileage:'Fine to 150k with maintenance'}
+  ]},
+  {brand:'infiniti', name:'QX80', body:'SUV', msrp:72000, gens:[
+    {label:'1st gen', y0:2011, y1:2026, engine:'5.6L V8', tier:'good', issues:['None major — shares the Nissan Patrol/Titan truck platform'], pick:'Luxe', mileage:'Fine to 180k+ miles'}
+  ]},
+
+  {brand:'cadillac', name:'Escalade', body:'SUV', msrp:82000, gens:[
+    {label:'5th gen', y0:2021, y1:2026, engine:'6.2L V8 / 3.0L Duramax', tier:'good', issues:['Same AFM lifter risk as other GM 6.2L V8 trucks/SUVs', 'Complex Super Cruise/electronics can be costly out of warranty'], pick:'3.0L Duramax', mileage:'Check for lifter-tick before buying the V8'}
+  ]},
+  {brand:'cadillac', name:'CT5', body:'Sedan', msrp:46000, gens:[
+    {label:'1st gen', y0:2020, y1:2026, engine:'2.0L Turbo / 3.0L Twin-Turbo V6', tier:'good', issues:['None major'], pick:'Luxury 2.0T', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'cadillac', name:'XT5', body:'SUV', msrp:48000, gens:[
+    {label:'1st gen', y0:2017, y1:2026, engine:'3.6L V6', tier:'good', issues:['CUE infotainment on early (2017–19) builds was widely criticized'], pick:'2020+', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'buick', name:'Enclave', body:'SUV', msrp:48000, gens:[
+    {label:'2nd gen', y0:2018, y1:2026, engine:'3.6L V6', tier:'good', issues:['None major'], pick:'Essence', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'buick', name:'Encore GX', body:'SUV', msrp:28000, gens:[
+    {label:'1st gen', y0:2020, y1:2026, engine:'1.2L/1.3L Turbo I3', tier:'good', issues:['Small-displacement turbo is new to the lineup; limited long-term data'], pick:'1.3L Turbo', mileage:'Fine to 120k; data still developing'}
+  ]},
+
+  {brand:'genesis', name:'GV70', body:'SUV', msrp:48000, gens:[
+    {label:'1st gen', y0:2022, y1:2026, engine:'2.5L Turbo / 3.5L Twin-Turbo V6', tier:'good', issues:['Too new for long-term data'], pick:'2.5T Advanced', mileage:'Too new — limited data'}
+  ]},
+  {brand:'genesis', name:'G70', body:'Sedan', msrp:42000, gens:[
+    {label:'1st gen', y0:2019, y1:2026, engine:'2.0L Turbo / 3.3L Twin-Turbo V6', tier:'good', issues:['None major'], pick:'2.0T Advanced', mileage:'Fine to 150k miles'}
+  ]},
+  {brand:'genesis', name:'GV80', body:'SUV', msrp:58000, gens:[
+    {label:'1st gen', y0:2021, y1:2026, engine:'2.5L Turbo / 3.5L Twin-Turbo V6', tier:'good', issues:['None major'], pick:'2.5T Advanced', mileage:'Fine to 150k miles'}
+  ]},
+
+  {brand:'mini', name:'Cooper Hardtop', body:'Hatchback', msrp:28000, gens:[
+    {label:'F56', y0:2014, y1:2026, engine:'B38/B46/B48 Turbo I3/I4', tier:'caution', issues:['Timing-chain tensioner and water-pump wear are known risks'], pick:'Cooper S', mileage:'Budget for timing-chain/water-pump repairs past 80k'}
+  ]},
+  {brand:'mini', name:'Countryman', body:'SUV', msrp:34000, gens:[
+    {label:'2nd gen', y0:2017, y1:2026, engine:'B38/B46/B48 Turbo I3/I4', tier:'caution', issues:['Shares the timing-chain/water-pump risk of the Hardtop'], pick:'Cooper S ALL4', mileage:'Budget for timing-chain/water-pump repairs past 80k'}
+  ]},
+
+  {brand:'mitsubishi', name:'Outlander', body:'SUV', msrp:30000, gens:[
+    {label:'4th gen', y0:2022, y1:2026, engine:'2.5L I4 / PHEV', tier:'good', issues:['None major'], pick:'SEL', mileage:'Fine to 150k miles'},
+    {label:'3rd gen', y0:2014, y1:2021, engine:'2.4L I4', tier:'caution', issues:['CVT reliability trails most mainstream competitors'], pick:'Confirm CVT service history', mileage:'Budget for CVT risk past 100k'}
+  ]},
+  {brand:'mitsubishi', name:'Eclipse Cross', body:'SUV', msrp:28000, gens:[
+    {label:'1st gen', y0:2018, y1:2026, engine:'1.5L Turbo', tier:'caution', issues:['CVT reliability concerns reported'], pick:'SE', mileage:'Budget for CVT risk past 100k'}
+  ]},
+
+  {brand:'dodge', name:'Charger', body:'Sedan', msrp:38000, gens:[
+    {label:'LD', y0:2011, y1:2023, engine:'3.6L V6 / 5.7L/6.4L Hemi V8', tier:'good', issues:['8-speed automatic (ZF-sourced) can have early shift-quality complaints'], pick:'R/T, 5.7L Hemi', mileage:'Fine to 150k with maintenance'}
+  ]},
+  {brand:'dodge', name:'Durango', body:'SUV', msrp:44000, gens:[
+    {label:'3rd gen', y0:2011, y1:2026, engine:'3.6L V6 / 5.7L Hemi V8', tier:'good', issues:['Shares some electrical gremlins with the Grand Cherokee of this era'], pick:'R/T, 5.7L Hemi', mileage:'Fine to 150k with maintenance'}
+  ]},
+
+  {brand:'chrysler', name:'Pacifica', body:'Minivan', msrp:40000, gens:[
+    {label:'1st gen', y0:2017, y1:2026, engine:'3.6L V6 / PHEV', tier:'caution', issues:['9-speed automatic and sliding-door sensor complaints are widely reported'], pick:'Touring-L, 2021+', mileage:'Verify transmission and sliding-door service history'}
+  ]},
+  {brand:'chrysler', name:'300', body:'Sedan', msrp:36000, gens:[
+    {label:'2nd gen (LX)', y0:2011, y1:2023, engine:'3.6L V6 / 5.7L Hemi V8', tier:'good', issues:['8-speed automatic (ZF-sourced) can have early shift-quality complaints'], pick:'300S, 5.7L Hemi', mileage:'Fine to 150k with maintenance'}
   ]}
 ];
 
@@ -690,9 +1051,43 @@ function retainedAtAge(retained5, age){
   return Math.max(0.15, Math.exp(-rate * age));
 }
 const TIER_MULT = {best:1.04, good:1.00, caution:0.93, avoid:0.85};
+const TIER_RANK = {avoid:0, caution:1, good:2, best:3};
 
 function fmtMoney(n){ return '$' + Math.round(n).toLocaleString(); }
 function fmtPct(n){ return Math.round(n*100) + '%'; }
+
+/* ============== BODY-TYPE ICONS ============== */
+const BODY_TYPES = ['Sedan','SUV','Truck','Coupe','Hatchback','Minivan','Wagon','Convertible'];
+const BODY_PATHS = {
+  Sedan:'M4,23 L4,19 Q4,17 6,17 L12,17 Q16,10 24,10 L34,10 Q40,10 42,15 L52,15 Q58,15 60,19 L60,23 Z',
+  SUV:'M4,23 L4,16 Q4,13 7,13 L12,13 Q15,8 22,8 L40,8 Q46,8 48,13 L56,13 Q60,13 60,17 L60,23 Z',
+  Truck:'M3,23 L3,13 Q3,10 6,10 L14,10 Q17,6 22,6 L27,6 Q29,6 29,9 L29,16 L50,16 L50,19 L58,19 L60,21 L60,23 Z',
+  Coupe:'M6,23 L6,19 Q6,16 9,16 L14,16 Q19,9 27,9 L33,9 Q38,9 40,14 Q46,15 52,17 Q56,18 58,20 L58,23 Z',
+  Hatchback:'M5,23 L5,18 Q5,16 7,16 L12,16 Q16,9 23,9 L30,9 Q35,9 37,13 L46,13 Q50,13 50,17 L50,20 L48,20 L48,23 Z',
+  Minivan:'M4,23 L4,12 Q4,8 8,8 L50,8 Q56,8 56,13 L56,23 Z M34,10 L34,23',
+  Wagon:'M4,23 L4,19 Q4,17 6,17 L12,17 Q16,10 24,10 L46,10 Q52,10 54,14 L58,14 Q60,14 60,17 L60,23 Z',
+  Convertible:'M5,23 L5,19 Q5,17 7,17 L14,17 Q17,13 21,12 L24,12 L24,17 L46,17 Q52,17 54,19 L58,19 L58,23 Z'
+};
+const BODY_WHEELS = {
+  Sedan:[16,48], SUV:[16,48], Truck:[14,52], Coupe:[16,48], Hatchback:[15,45],
+  Minivan:[16,46], Wagon:[16,48], Convertible:[16,48]
+};
+const BODY_ALIAS = {Sports:'Coupe'};
+function bodyIcon(bodyStr){
+  let key = BODY_TYPES.find(k => bodyStr.indexOf(k) !== -1);
+  if(!key) key = BODY_ALIAS[bodyStr] || 'Sedan';
+  const w = BODY_WHEELS[key];
+  return `<svg class="vicon" viewBox="0 0 64 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="${BODY_PATHS[key]}" fill="currentColor" fill-opacity="0.14"/>
+    <circle cx="${w[0]}" cy="23" r="3.3" fill="currentColor" stroke="none"/>
+    <circle cx="${w[1]}" cy="23" r="3.3" fill="currentColor" stroke="none"/>
+  </svg>`;
+}
+function bodyTypesForBrand(id){
+  const seen = [];
+  modelsForBrand(id).forEach(m => { const b = m.body.split('/')[0].trim(); if (!seen.includes(b) && BODY_TYPES.includes(b)) seen.push(b); });
+  return seen.slice(0,4);
+}
 
 /* ============== GAUGE SVG ============== */
 function polarToCartesian(cx, cy, r, angleDeg){
@@ -723,7 +1118,7 @@ function gaugeSvg(pct, color, opts={}){
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
     <g class="ticks">${ticks}</g>
     <path d="${trackPath}" fill="none" stroke="rgba(237,234,226,0.1)" stroke-width="${stroke}" stroke-linecap="round"/>
-    <path d="${valuePath}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round"/>
+    <path class="${opts.glow?'glow-arc':''}" d="${valuePath}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round"/>
   </svg>`;
 }
 function tierColor(score){
@@ -748,6 +1143,7 @@ function renderBrandGrid(){
   const sorted = [...BRANDS].sort((a,b) => b.score - a.score);
   grid.innerHTML = sorted.map(b => {
     const color = tierColor(b.score);
+    const bodies = bodyTypesForBrand(b.id);
     return `<div class="tag-card" onclick="goBrandGuide('${b.id}')">
       <div class="tag-top">
         <div class="tag-id">
@@ -759,6 +1155,7 @@ function renderBrandGrid(){
           <div class="readout"><b style="font-size:19px; color:${color};">${b.score}</b><span>Score</span></div>
         </div>
       </div>
+      <div class="tag-bodies">${bodies.map(bt => `<span class="vicon-chip" title="${bt}">${bodyIcon(bt)}</span>`).join('')}</div>
       <div class="tag-foot">
         <div class="kept">5-yr value kept<b class="mono">${b.retained5}%</b></div>
         <div class="go">View guide <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
@@ -769,6 +1166,76 @@ function renderBrandGrid(){
   document.getElementById('stat-brands').textContent = BRANDS.length;
   document.getElementById('stat-models').textContent = MODELS.length;
   document.getElementById('stat-gens').textContent = MODELS.reduce((s,m) => s + m.gens.length, 0);
+  document.getElementById('hero-badge').textContent = `${BRANDS.length} brands · ${MODELS.length} models inspected · data through 2026 model year`;
+}
+
+/* ============== HERO ART ============== */
+function renderHeroArt(){
+  const avgScore = BRANDS.reduce((s,b) => s + b.score, 0) / BRANDS.length;
+  const color = tierColor(avgScore);
+  const showcase = ['Sedan','SUV','Truck','Coupe','Minivan','Convertible'];
+  document.getElementById('hero-art').innerHTML = `
+    <div class="gauge">
+      ${gaugeSvg(avgScore/10, color, {size:150, stroke:12, glow:true})}
+      <div class="readout"><b style="color:${color};">${avgScore.toFixed(1)}</b><span>Fleet avg</span></div>
+    </div>
+    <div class="hero-dial-label">Average reliability score<br>across every brand tracked</div>
+    <div class="hero-icon-row">${showcase.map(t => `<span class="vicon-chip" title="${t}">${bodyIcon(t)}</span>`).join('')}</div>
+  `;
+}
+
+/* ============== ALL MODELS VIEW ============== */
+let modelFilterBody = 'All', modelFilterQuery = '';
+function renderChipRow(){
+  const types = ['All', ...BODY_TYPES];
+  document.getElementById('chip-row').innerHTML = types.map(t => `<button class="chip${t===modelFilterBody?' active':''}" data-body="${t}" onclick="setModelFilterBody('${t}')">${t!=='All'?bodyIcon(t):''}${t}</button>`).join('');
+}
+function setModelFilterBody(b){
+  modelFilterBody = b;
+  renderChipRow();
+  renderModelGrid();
+}
+function setModelQuery(v){
+  modelFilterQuery = v.trim().toLowerCase();
+  renderModelGrid();
+}
+function renderModelGrid(){
+  const grid = document.getElementById('model-grid');
+  let list = MODELS.filter(m => {
+    const brand = brandById(m.brand);
+    const bodyOk = modelFilterBody === 'All' || m.body.indexOf(modelFilterBody) !== -1;
+    const qOk = !modelFilterQuery || m.name.toLowerCase().includes(modelFilterQuery) || brand.name.toLowerCase().includes(modelFilterQuery);
+    return bodyOk && qOk;
+  });
+  list = list.slice().sort((a,b) => {
+    const bn = brandById(a.brand).name.localeCompare(brandById(b.brand).name);
+    return bn !== 0 ? bn : a.name.localeCompare(b.name);
+  });
+  grid.innerHTML = list.map(m => {
+    const brand = brandById(m.brand);
+    const bestGen = m.gens.reduce((best,g) => (!best || TIER_RANK[g.tier] > TIER_RANK[best.tier]) ? g : best, null);
+    const modelIdx = MODELS.indexOf(m);
+    return `<div class="model-card" onclick="goModelFromGrid('${m.brand}', ${modelIdx})">
+      <div class="model-card-icon">${bodyIcon(m.body)}</div>
+      <div class="model-card-body">
+        <div class="model-card-top">
+          <span class="model-card-brand">${brand.name}</span>
+          <span class="stamp-pill stamp-${bestGen.tier}" style="transform:none; font-size:9px; padding:4px 7px;">${TIER_LABEL[bestGen.tier]}</span>
+        </div>
+        <div class="model-card-name">${m.name}</div>
+        <div class="model-card-meta">${m.body} · ${m.gens.length} generation${m.gens.length>1?'s':''} tracked</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('model-count').textContent = list.length;
+}
+function goModelFromGrid(brandId, modelIdx){
+  const model = MODELS[modelIdx];
+  goView('guide');
+  document.getElementById('g-brand').value = brandId;
+  populateModelSelect(document.getElementById('g-model'), brandId);
+  document.getElementById('g-model').value = modelsForBrand(brandId).indexOf(model);
+  onGuideModelChange();
 }
 
 function goBrandGuide(brandId){
@@ -960,13 +1427,16 @@ function checkDeal(){
 /* ============== INIT ============== */
 function init(){
   renderBrandGrid();
+  renderHeroArt();
+  renderChipRow();
+  renderModelGrid();
   populateBrandSelect(document.getElementById('g-brand'));
   populateBrandSelect(document.getElementById('d-brand'));
   onGuideBrandChange();
   onDealBrandChange();
 
   const startView = (location.hash || '#brands').replace('#','');
-  goView(['brands','guide','deal'].includes(startView) ? startView : 'brands');
+  goView(['brands','models','guide','deal'].includes(startView) ? startView : 'brands');
 }
 init();
 </script>
