@@ -368,6 +368,220 @@
     .model-card-name{font-size:18px;}
     .model-card-meta{flex-direction:column; gap:2px; font-size:11.5px;}
   }
+  
+  /* ======================= v6: layout for every screen ======================= */
+  :root{--hh:66px;}
+  .ti{width:16px; height:16px; flex:none;}
+  nav.tabs button{display:inline-flex; align-items:center; justify-content:center; gap:7px;}
+  nav.tabs{max-width:none; width:auto;}
+  .anchor{display:block; position:relative; top:calc(-1 * var(--hh) - 14px); visibility:hidden;}
+  [id^="g-sec-"]{scroll-margin-top:calc(var(--hh) + 14px);}
+  .load-more[hidden]{display:none;}
+
+  /* hero VIN */
+  .vin-quick{margin-top:22px; max-width:520px;}
+  .vin-row{display:flex; gap:8px;}
+  .vin-row input::placeholder{text-transform:none; letter-spacing:0;}
+  .vin-row input{flex:1; font-family:'IBM Plex Mono',monospace; letter-spacing:.06em; text-transform:uppercase;}
+  .vin-row .btn{flex:none;}
+
+  /* sidebar layouts */
+  .side-layout{display:block;}
+  .side{min-width:0;}
+  .side-group{margin-top:16px;}
+  .side-group.two{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .side-group.two select{width:100%;}
+  .side-title{font-size:32px; margin-bottom:14px;}
+  .pickers{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px;}
+  .filters{display:grid; grid-template-columns:minmax(0,1fr); gap:0; margin-bottom:16px;}
+  .filters .search{max-width:none;}
+  .filters .chip-row{margin-bottom:0;}
+  .filters .model-count{margin-top:12px;}
+  .jump{display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; margin-top:14px;}
+  .jump::-webkit-scrollbar{display:none;}
+  .jump a{flex:none; font-size:12.5px; font-weight:600; color:var(--ink-dim); background:var(--surface-2); border:1px solid var(--border-2); padding:7px 11px; text-decoration:none; white-space:nowrap;}
+  .jump a:hover{color:var(--paper); border-color:var(--ink-dim);}
+  .guide-side{margin-bottom:6px;}
+
+  @media(min-width:1100px){
+    .wrap{max-width:1400px; padding:0 32px;}
+    header .wrap{padding:13px 32px;}
+    .side-layout{display:grid; grid-template-columns:290px minmax(0,1fr); gap:28px; align-items:start;}
+    .side{position:sticky; top:calc(var(--hh) + 18px); max-height:calc(100vh - var(--hh) - 36px); overflow-y:auto; scrollbar-width:thin; background:var(--surface); border:1px solid var(--border); padding:18px;}
+    .filters{margin-bottom:0;}
+    .filters .chip-row .chip{padding:7px 11px;}
+    .pickers{grid-template-columns:1fr; gap:12px;}
+    .guide-side .gen-timeline{flex-direction:column; gap:4px; overflow:visible;}
+    .guide-side .gen-tick{min-width:0; border-bottom-width:1px; border-left:3px solid var(--border-2); display:flex; justify-content:space-between; align-items:center; gap:8px;}
+    .guide-side .gen-tick.sel{border-left-color:var(--amber); border-bottom-color:var(--border);}
+    .guide-side .gen-tick .lb{order:-1; margin:0;}
+    .jump{flex-direction:column; gap:2px; border-top:1px solid var(--border); padding-top:12px; margin-top:16px;}
+    .jump a{background:none; border:0; border-left:2px solid transparent; padding:7px 10px;}
+    .jump a:hover{border-left-color:var(--amber); background:var(--surface-2);}
+    .guide-layout .detail-card{margin-top:0;}
+    .model-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));}
+    .brand-grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr));}
+    .hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:48px;}
+    .stage{min-height:360px;} .stage-car{height:210px;}
+  }
+  @media(min-width:1500px){ .brand-grid{grid-template-columns:repeat(5,minmax(0,1fr));} }
+  @media(max-width:1099px){
+    .guide-side .jump{position:sticky; top:var(--hh); z-index:20; background:rgba(21,23,26,.96); margin:12px -24px 0; padding:8px 24px; border-bottom:1px solid var(--border);}
+    .filters .chip-row{flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding-bottom:2px;}
+    .filters .chip-row::-webkit-scrollbar{display:none;}
+    .filters .chip{flex:none;}
+    .filters{grid-template-columns:minmax(0,1fr) auto; column-gap:14px; align-items:end;}
+    .filters .search{grid-column:1 / -1;}
+    .filters .side-group:nth-of-type(1){grid-column:1 / -1;}
+    .filters .side-group.two{grid-column:1; margin-top:12px;}
+    .filters .model-count{grid-column:2; margin:0 0 12px;}
+    .finder-form{background:var(--surface); border:1px solid var(--border); padding:16px; margin-bottom:16px;}
+  }
+
+  /* guide extras */
+  .media-col{display:flex; flex-direction:column; border-right:1px solid var(--border); min-width:0;}
+  .media-col .media{border-right:0; flex:1;}
+  .thumbs{display:flex; gap:6px; padding:8px; background:#16181b; border-top:1px solid var(--border); overflow-x:auto;}
+  .thumbs[hidden]{display:none;}
+  .thumb{flex:none; width:72px; height:48px; padding:0; border:2px solid transparent; background:#222; overflow:hidden; opacity:.7;}
+  .thumb.on, .thumb:hover{border-color:var(--amber); opacity:1;}
+  .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .quick-stats{display:flex; align-items:center; gap:12px; margin-top:16px; padding:10px 12px; background:var(--surface-2); border:1px solid var(--border);}
+  .quick-stats b{display:block; font-size:13.5px;}
+  .quick-stats span{font-size:12.5px; color:var(--ink-dim);}
+  details.more{margin-top:20px;}
+  details.more summary{cursor:pointer; font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:20px; margin-bottom:8px; list-style:none;}
+  details.more summary::-webkit-details-marker{display:none;}
+  details.more summary::after{content:' ▾'; color:var(--ink-faint); font-size:14px;}
+  details.more:not([open]) summary::after{content:' ▸';}
+  .detail-body + .detail-body, .live + .detail-body, .cost-sec{border-top:1px solid var(--border);}
+  .cost-head{display:flex; justify-content:space-between; align-items:flex-end; gap:14px; flex-wrap:wrap;}
+  .cost-ctrl{display:flex; gap:10px;}
+  .cost-grid{display:grid; grid-template-columns:250px minmax(0,1fr); gap:24px; align-items:start; margin-top:6px;}
+  .cost-total{background:var(--surface-2); border:1px solid var(--border); border-top:2px solid var(--amber); padding:16px;}
+  .cost-total .k{font-size:12px; color:var(--ink-faint);}
+  .big-num{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:46px; line-height:1; margin-top:4px;}
+  .cost-total .per{font-size:13px; color:var(--ink-dim); margin-top:6px;}
+  .cost-parts{list-style:none; margin:14px 0 0; padding:12px 0 0; border-top:1px dashed var(--border); display:grid; gap:8px;}
+  .cost-parts li{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-dim);}
+  .cost-parts i{width:10px; height:10px; flex:none; border-radius:2px;}
+  .cost-parts b{margin-left:auto; color:var(--paper); font-family:'IBM Plex Mono',monospace; font-weight:600;}
+  .safety-tech{margin-top:10px;}
+  .tech-row{display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
+  .tech-k{font-size:12px; color:var(--ink-faint); margin-right:4px;}
+  .tech{font-size:12px; color:var(--ink-dim); border:1px solid var(--border-2); padding:4px 9px; background:var(--surface-2);}
+  .tech em{font-style:normal; color:var(--paper); font-weight:600;}
+  .tech.std{border-color:rgba(63,184,139,.5);}
+  .tech.warn{border-color:var(--red); color:#ff8a84;}
+  .yg{display:grid; gap:2px;}
+  .yg-row{display:grid; grid-template-columns:62px 1.1fr 1fr 1.5fr 1.2fr; gap:12px; align-items:center; padding:9px 12px; background:var(--surface-2); border:1px solid transparent; text-align:left; color:var(--ink-dim); font:inherit; font-size:13px; width:100%;}
+  button.yg-row:hover{border-color:var(--border-2);}
+  .yg-head{background:none; font-size:11.5px; color:var(--ink-faint); padding-top:0; padding-bottom:4px;}
+  .yg-y{color:var(--paper); font-weight:600;}
+  .yg-bar{display:flex; align-items:center; gap:8px; min-width:0;}
+  .yg-bar i{display:block; height:8px; border-radius:0 3px 3px 0; flex:none; max-width:70%;}
+  .yg-bar b{color:var(--paper); font-weight:600; font-family:'IBM Plex Mono',monospace; font-size:12.5px;}
+  .yg-row.good{border-left:3px solid var(--green);} .yg-row.good .yg-v{color:var(--green);}
+  .yg-row.bad{border-left:3px solid var(--red);} .yg-row.bad .yg-v{color:#ff8a84;}
+  .yg-v{font-size:12.5px; font-weight:600;}
+  .similar{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;}
+  .sim-card{background:var(--surface-2); border:1px solid var(--border); padding:0; text-align:left; color:inherit; font:inherit; display:flex; flex-direction:column;}
+  .sim-card:hover{border-color:var(--amber);}
+  .sim-art{height:92px; padding:4px 8px 0; display:flex; align-items:flex-end; background:linear-gradient(180deg,#23262b,#1a1c20); border-bottom:1px solid var(--border);}
+  .sim-art .car-svg{width:100%; height:auto;}
+  .sim-body{padding:10px 12px 12px;}
+  .sim-name{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:19px; margin-top:2px;}
+  .sim-meta{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:8px; font-size:13px;}
+  .sim-meta b{font-family:'IBM Plex Mono',monospace; font-weight:600;}
+
+  /* finder */
+  .budget-out{display:flex; align-items:baseline; gap:8px; margin-bottom:6px;}
+  .budget-out b{font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:30px;}
+  input[type=range]{width:100%; accent-color:var(--amber); height:28px;}
+  .finder-summary{font-size:13.5px; color:var(--ink-dim); margin-bottom:12px;}
+  .finder-summary b{color:var(--paper);}
+  .finder-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr)); gap:12px;}
+  .fit-card{position:relative; display:grid; grid-template-columns:170px minmax(0,1fr); background:var(--surface); border:1px solid var(--border);}
+  .fit-rank{position:absolute; top:0; left:0; background:var(--amber); color:var(--amber-ink); font-weight:800; font-family:'Big Shoulders Display',sans-serif; font-size:16px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; z-index:1;}
+  .fit-art{display:flex; align-items:center; padding:30px 8px 10px; background:linear-gradient(180deg,#23262b,#1a1c20); border-right:1px solid var(--border);}
+  .fit-art .car-svg{width:100%; height:auto;}
+  .fit-body{padding:14px 16px;}
+  .fit-top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start;}
+  .fit-name{font-size:22px; margin-top:2px;}
+  .fit-gauge .readout span{font-size:8px;}
+  .fit-why{list-style:none; padding:0; margin:8px 0 10px; display:grid; gap:4px;}
+  .fit-why li{font-size:13px; color:var(--ink-dim); padding-left:16px; position:relative; line-height:1.4;}
+  .fit-why li::before{content:'✓'; position:absolute; left:0; color:var(--green); font-weight:700;}
+  .fit-stats{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;}
+  .fit-stats span{display:flex; flex-direction:column; gap:2px;}
+  .fit-stats em{font-style:normal; font-size:11.5px; color:var(--ink-faint);}
+  .fit-stats b{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13.5px;}
+
+  /* VIN */
+  .vin-panel .vin-row{max-width:640px;}
+  .vin-card{display:grid; grid-template-columns:240px minmax(0,1fr); gap:18px; margin-top:16px; background:var(--surface-2); border:1px solid var(--border); padding:14px;}
+  .vin-art{display:flex; align-items:center;}
+  .vin-art .car-svg{width:100%; height:auto;}
+  .vin-title{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .vin-title h3{font-size:26px;}
+  .vin-code{font-size:12px; color:var(--ink-faint); letter-spacing:.06em;}
+  .vin-spec{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px 16px; margin:12px 0 0;}
+  .vin-spec dt{font-size:11.5px; color:var(--ink-faint);}
+  .vin-spec dd{margin:2px 0 0; font-size:13.5px;}
+  .vin-match{margin-top:12px; font-size:13.5px; color:var(--ink-dim); display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+
+  /* compare on small screens */
+  table.cmp th[scope=row]{position:sticky; left:0; background:var(--bg); z-index:1;}
+
+  @media(max-width:980px){
+    .media-col{border-right:0; border-bottom:1px solid var(--border);}
+    .cost-grid{grid-template-columns:1fr;}
+    .vin-card{grid-template-columns:1fr;}
+    .vin-art{max-width:300px;}
+  }
+  @media(max-width:760px){
+    :root{--hh:54px;}
+    header{backdrop-filter:none; background:rgba(21,23,26,.97);}
+    header .wrap{justify-content:center; padding:11px 16px;}
+    nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:40; border:0; border-top:1px solid var(--border-2); background:rgba(23,25,28,.98); padding:5px 4px calc(5px + env(safe-area-inset-bottom)); gap:0; max-width:none; width:100%;}
+    nav.tabs button{flex-direction:column; gap:3px; padding:6px 2px; font-size:10.5px; font-weight:600;}
+    nav.tabs button.active{background:transparent; color:var(--amber);}
+    nav.tabs button.active .ti{stroke-width:2.3;}
+    .ti{width:21px; height:21px;}
+    nav.tabs .long{display:none;} nav.tabs .short{display:inline;}
+    body{padding-bottom:calc(68px + env(safe-area-inset-bottom));}
+    footer{margin-bottom:0;}
+    .pickers{grid-template-columns:1fr 1fr;}
+    .pickers > div:nth-child(3){grid-column:1 / -1;}
+    .guide-side .jump{margin:12px -16px 0; padding:8px 16px;}
+    .side-title{font-size:27px;}
+    .cmp-slots{display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:10px; margin:0 -16px; padding:0 16px 4px;}
+    .cmp-slot{flex:0 0 84%; scroll-snap-align:start;}
+    .yg-row{grid-template-columns:48px 1fr 1.3fr 1.1fr; gap:8px; padding:8px 9px; font-size:12.5px;}
+    .yg-row > :nth-child(2){display:none;}
+    .yg-v{font-size:11.5px;}
+    .fit-card{grid-template-columns:104px minmax(0,1fr);}
+    .fit-art{padding:30px 4px 8px; align-items:flex-start;}
+    .fit-body{padding:12px 12px 12px 12px;}
+    .fit-name{font-size:19px;}
+    .fit-gauge svg{width:46px; height:46px;} .fit-gauge .readout b{font-size:14px !important;} .fit-gauge .readout span{display:none;}
+    .fit-stats{gap:10px;}
+    .fit-why li{font-size:12.5px;}
+    .similar{grid-template-columns:1fr 1fr;}
+    .sim-art{height:66px;}
+    .sim-name{font-size:16px;}
+    .sim-meta{flex-direction:column; align-items:flex-start; gap:4px;}
+    .big-num{font-size:40px;}
+    .cost-head{align-items:flex-start;}
+    .quick-stats{padding:8px 10px;}
+    .tiles{gap:8px;}
+    .tile{padding:11px 12px; min-height:0;}
+    .vin-quick{margin-top:18px;}
+    .hero h1{font-size:40px;}
+    .detail-head h3{font-size:24px;}
+  }
+  @media(max-width:380px){ .similar{grid-template-columns:1fr;} .pickers{grid-template-columns:1fr;} }
+
   @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important; scroll-behavior:auto !important;} }
 </style>
 </head>
@@ -379,11 +593,12 @@
       <span>DriveWise</span>
     </button>
     <nav class="tabs" aria-label="Sections">
-      <button data-view="brands" class="active" onclick="goView('brands')"><span class="long">Brands</span><span class="short">Brands</span></button>
-      <button data-view="models" onclick="goView('models')"><span class="long">All Models</span><span class="short">Models</span></button>
-      <button data-view="guide" onclick="goView('guide')"><span class="long">Model Guide</span><span class="short">Guide</span></button>
-      <button data-view="compare" onclick="goView('compare')"><span class="long">Compare</span><span class="short">Compare</span></button>
-      <button data-view="deal" onclick="goView('deal')"><span class="long">Deal Checker</span><span class="short">Deal</span></button>
+      <button data-view="brands" class="active" onclick="goView('brands')"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h11" /></svg><span class="long">Home</span><span class="short">Home</span></button>
+      <button data-view="models" onclick="goView('models')"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="13" width="7" height="7" rx="1"/><rect x="14" y="13" width="7" height="7" rx="1"/></svg><span class="long">All Models</span><span class="short">Models</span></button>
+      <button data-view="guide" onclick="goView('guide')"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg><span class="long">Model Guide</span><span class="short">Guide</span></button>
+      <button data-view="finder" onclick="goView('finder')"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/><path d="M11 8v6M8 11h6"/></svg><span class="long">Car Finder</span><span class="short">Finder</span></button>
+      <button data-view="compare" onclick="goView('compare')"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4v16M16 4v16"/><path d="M4 8h4M16 16h4"/></svg><span class="long">Compare</span><span class="short">Compare</span></button>
+      <button data-view="deal" onclick="goView('deal')"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12 12 3h8v8l-9 9-8-8Z"/><circle cx="15.5" cy="8.5" r="1.4"/></svg><span class="long">Deal &amp; VIN</span><span class="short">Deal</span></button>
     </nav>
   </div>
 </header>
@@ -397,9 +612,13 @@
         <h1>Buy the right car.<br>Not just a car.</h1>
         <p class="lede">Reliability by brand and generation, the years to buy and the years to skip, real depreciation curves — plus live recalls, complaints and crash ratings from NHTSA for every model year.</p>
         <div class="hero-cta">
-          <button class="btn" onclick="goView('models')">Browse every model</button>
-          <button class="btn ghost" onclick="goView('deal')">Check a deal</button>
+          <button class="btn" onclick="goView('finder')">Find my car</button>
+          <button class="btn ghost" onclick="goView('models')">Browse every model</button>
         </div>
+        <form class="vin-quick" onsubmit="event.preventDefault(); runVin(this.querySelector('input').value, true);">
+          <label class="fieldlabel" for="hero-vin">Have a VIN? Decode it and see its recalls</label>
+          <div class="vin-row"><input type="text" id="hero-vin" maxlength="17" autocomplete="off" spellcheck="false" placeholder="17-character VIN" aria-label="Vehicle identification number"><button class="btn" type="submit">Look up</button></div>
+        </form>
         <div class="odo-row">
           <div class="odo"><b id="stat-brands">–</b><span>Brands</span></div>
           <div class="odo"><b id="stat-models">–</b><span>Models</span></div>
@@ -435,6 +654,7 @@
         </div>
       </div>
       <div class="brand-grid" id="brand-grid"></div>
+      <button class="btn ghost load-more" id="brand-more" hidden onclick="brandShowAll = true; renderBrandGrid();">Show all brands</button>
     </section>
   </div>
 </div>
@@ -445,22 +665,28 @@
       <div class="section-head">
         <div>
           <h2>Every model we track</h2>
-          <p>Search or filter by body style, then open any car for its generation-by-generation guide, live recalls and depreciation.</p>
+          <p>Search or filter by body style, then open any car for its generation-by-generation guide, live recalls, costs and depreciation.</p>
         </div>
       </div>
-      <div class="search-row">
-        <input type="text" class="search" id="model-search" placeholder="Search by model or brand…" aria-label="Search models" oninput="setModelQuery(this.value)">
-        <select class="compact" id="model-sort" aria-label="Sort models" onchange="renderModelGrid()">
-          <option value="rating">Best rated first</option><option value="price">Lowest used price</option><option value="name">Brand A–Z</option><option value="newest">Newest generation</option>
-        </select>
-        <select class="compact" id="model-tier" aria-label="Filter by rating" onchange="renderModelGrid()">
-          <option value="all">Any rating</option><option value="best">Has a Best Pick year</option><option value="good">Solid Choice or better</option>
-        </select>
-        <div class="model-count"><span id="model-count">0</span> models</div>
+      <div class="side-layout">
+        <aside class="side filters" aria-label="Model filters">
+          <input type="text" class="search" id="model-search" placeholder="Search model, brand or year…" aria-label="Search models" oninput="setModelQuery(this.value)">
+          <div class="side-group"><div class="fieldlabel">Body style</div><div class="chip-row" id="chip-row"></div></div>
+          <div class="side-group two">
+            <div><label class="fieldlabel" for="model-sort">Sort</label><select class="compact" id="model-sort" onchange="renderModelGrid()">
+              <option value="rating">Best rated first</option><option value="price">Lowest used price</option><option value="name">Brand A–Z</option><option value="newest">Newest generation</option>
+            </select></div>
+            <div><label class="fieldlabel" for="model-tier">Rating</label><select class="compact" id="model-tier" onchange="renderModelGrid()">
+              <option value="all">Any rating</option><option value="best">Has a Best Pick year</option><option value="good">Solid Choice or better</option>
+            </select></div>
+          </div>
+          <div class="model-count"><span id="model-count">0</span> models match</div>
+        </aside>
+        <div class="side-main">
+          <div class="model-grid" id="model-grid"></div>
+          <button class="btn ghost load-more" id="load-more" onclick="showMoreModels()" hidden>Show more models</button>
+        </div>
       </div>
-      <div class="chip-row" id="chip-row"></div>
-      <div class="model-grid" id="model-grid"></div>
-      <button class="btn ghost load-more" id="load-more" onclick="showMoreModels()" hidden>Show more models</button>
     </section>
   </div>
 </div>
@@ -468,19 +694,55 @@
 <div class="view" id="view-guide">
   <div class="wrap">
     <section>
+      <div class="side-layout guide-layout">
+        <aside class="side guide-side" aria-label="Choose a car">
+          <h2 class="side-title">Model guide</h2>
+          <div class="pickers">
+            <div><label class="fieldlabel" for="g-brand">Brand</label><select id="g-brand" onchange="onGuideBrandChange()"></select></div>
+            <div><label class="fieldlabel" for="g-model">Model</label><select id="g-model" onchange="onGuideModelChange()"></select></div>
+            <div><label class="fieldlabel" for="g-gen">Generation</label><select id="g-gen" onchange="renderGuideDetail()"></select></div>
+          </div>
+          <div class="gen-timeline" id="g-timeline" role="tablist" aria-label="Generations"></div>
+          <nav class="jump" id="g-jump" aria-label="Jump to section"></nav>
+        </aside>
+        <div class="side-main" id="guide-detail"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="view" id="view-finder">
+  <div class="wrap">
+    <section>
       <div class="section-head">
         <div>
-          <h2>Model guide</h2>
-          <p>Pick a brand, model and generation to see reliability, known issues with typical repair costs, depreciation and live government data.</p>
+          <h2>Car finder</h2>
+          <p>Tell us your budget, what kind of car and what matters most. We rank every model year we track that fits — with the reasons.</p>
         </div>
       </div>
-      <div class="field-grid">
-        <div><label class="fieldlabel" for="g-brand">Brand</label><select id="g-brand" onchange="onGuideBrandChange()"></select></div>
-        <div><label class="fieldlabel" for="g-model">Model</label><select id="g-model" onchange="onGuideModelChange()"></select></div>
-        <div><label class="fieldlabel" for="g-gen">Generation</label><select id="g-gen" onchange="renderGuideDetail()"></select></div>
+      <div class="side-layout">
+        <aside class="side finder-form" aria-label="Your needs">
+          <div class="side-group">
+            <label class="fieldlabel" for="f-budget">Budget</label>
+            <div class="budget-out"><b id="f-budget-out">$25,000</b><span class="muted">max price</span></div>
+            <input type="range" id="f-budget" min="5000" max="90000" step="1000" value="25000" oninput="fBudget(this.value)">
+          </div>
+          <div class="side-group"><div class="fieldlabel">Body style <span class="muted" style="font-weight:400">(any if none picked)</span></div><div class="chip-row" id="f-body"></div></div>
+          <div class="side-group"><div class="fieldlabel">What matters most <span class="muted" style="font-weight:400">(pick up to 3)</span></div><div class="chip-row" id="f-prio"></div></div>
+          <div class="side-group two">
+            <div><label class="fieldlabel" for="f-power">Powertrain</label><select id="f-power" class="compact" onchange="runFinder()"><option value="any">Any</option><option value="gas">Gas only</option><option value="hybrid">Hybrid or plug-in</option><option value="ev">Electric only</option></select></div>
+            <div><label class="fieldlabel" for="f-minyear">Newer than</label><select id="f-minyear" class="compact" onchange="runFinder()"></select></div>
+          </div>
+          <div class="side-group two">
+            <div><label class="fieldlabel" for="f-miles">Miles a year</label><select id="f-miles" class="compact" onchange="runFinder()"><option value="8000">8,000</option><option value="12000" selected>12,000</option><option value="15000">15,000</option><option value="20000">20,000</option></select></div>
+            <div><label class="fieldlabel" for="f-seg">Brands</label><select id="f-seg" class="compact" onchange="runFinder()"><option value="all">All brands</option><option value="Mainstream">Mainstream</option><option value="Luxury">Luxury</option></select></div>
+          </div>
+        </aside>
+        <div class="side-main">
+          <div class="finder-summary" id="f-summary"></div>
+          <div class="finder-list" id="f-results"></div>
+        </div>
       </div>
-      <div class="gen-timeline" id="g-timeline" role="tablist" aria-label="Generations"></div>
-      <div id="guide-detail"></div>
     </section>
   </div>
 </div>
@@ -499,6 +761,10 @@
         <div class="panel-head"><div><h3>Value over time</h3><p>Estimated share of the original price each car keeps as it ages.</p></div></div>
         <div id="cmp-chart"></div>
       </div>
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><h3>5-year cost to own</h3><p>Depreciation, fuel, insurance and upkeep for each car at 12,000 miles a year.</p></div></div>
+        <div id="cmp-cost"></div>
+      </div>
       <div class="cmp-table-wrap"><table class="cmp" id="cmp-table"></table></div>
     </section>
   </div>
@@ -509,11 +775,20 @@
     <section>
       <div class="section-head">
         <div>
-          <h2>Deal checker</h2>
-          <p>Enter the vehicle, its mileage and the asking price to see where it lands against an estimated fair-value range — and whether that model year has open recalls.</p>
+          <h2>Deal checker &amp; VIN lookup</h2>
+          <p>Start with the VIN if you have it — we decode the exact car and pull its model-year recalls. Then check the asking price against an estimated fair-value range.</p>
         </div>
       </div>
-      <div class="panel">
+      <div class="panel vin-panel" id="vin-panel">
+        <div class="panel-head"><div><h3>VIN lookup</h3><p>Decoded by NHTSA's vPIC service. The VIN is on the driver-side dashboard, the door jamb and the title.</p></div></div>
+        <form class="vin-row" onsubmit="event.preventDefault(); runVin(document.getElementById('d-vin').value);">
+          <input type="text" id="d-vin" maxlength="17" autocomplete="off" spellcheck="false" placeholder="e.g. 4T1B11HK5KU123456" aria-label="Vehicle identification number">
+          <button class="btn" type="submit">Decode VIN</button>
+        </form>
+        <div id="vin-result"></div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-head"><div><h3>Is the price fair?</h3><p>Pick the car, or decode a VIN above to fill this in.</p></div></div>
         <div class="field-grid">
           <div><label class="fieldlabel" for="d-brand">Brand</label><select id="d-brand" onchange="onDealBrandChange()"></select></div>
           <div><label class="fieldlabel" for="d-model">Model</label><select id="d-model" onchange="onDealModelChange()"></select></div>
@@ -1100,6 +1375,80 @@ function scatterChart(el, cfg){
   __charts.set(el, render); render();
 }
 
+/* ---- stacked columns (<=4 categories, 2px surface gaps, total on top) ---- */
+function stackedColumns(el, cfg){
+  const render = () => {
+    el.textContent = '';
+    el.appendChild(legendEl(cfg.keys.map(k => ({name: k.name, color: k.color}))));
+    const box = document.createElement('div'); box.className = 'chart'; el.appendChild(box);
+    const W = Math.max(260, el.clientWidth || 560), H = cfg.height || 230;
+    const M = {l: 48, r: 8, t: 22, b: 28};
+    const cols = cfg.cols, n = cols.length;
+    const totals = cols.map(c => cfg.keys.reduce((s, k) => s + (c.v[k.id] || 0), 0));
+    const ticks = niceTicks(0, Math.max(1, ...totals), 4), yMax = ticks[ticks.length - 1];
+    const band = (W - M.l - M.r) / n, bw = Math.min(46, band * .58);
+    const Y = v => M.t + (1 - v / yMax) * (H - M.t - M.b);
+    const svg = svgEl('svg', {viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': cfg.title || 'Stacked column chart'}, box);
+    const g = svgEl('g', {class: 'grid'}, svg);
+    ticks.forEach(t => { svgEl('line', {x1: M.l, x2: W - M.r, y1: Y(t), y2: Y(t)}, g); svgText(svg, M.l - 8, Y(t) + 4, (cfg.yFmt || compactNum)(t), {'text-anchor': 'end'}); });
+    cols.forEach((c, i) => {
+      const cx = M.l + band * i + band / 2, x = cx - bw / 2;
+      let acc = 0; const segs = [];
+      cfg.keys.forEach((k, ki) => {
+        const v = c.v[k.id] || 0; if (v <= 0) return;
+        const y0 = Y(acc), y1 = Y(acc + v); acc += v;
+        const top = cfg.keys.slice(ki + 1).every(k2 => !(c.v[k2.id] > 0));
+        const h = Math.max(0, y0 - y1 - (top ? 0 : 2));
+        const r = top ? Math.min(4, h, bw / 2) : 0, yt = y0 - h;
+        const d = r ? `M${x},${y0} L${x},${yt + r} Q${x},${yt} ${x + r},${yt} L${x + bw - r},${yt} Q${x + bw},${yt} ${x + bw},${yt + r} L${x + bw},${y0} Z` : `M${x},${y0} L${x},${yt} L${x + bw},${yt} L${x + bw},${y0} Z`;
+        segs.push(svgEl('path', {d, fill: k.color}, svg));
+      });
+      svgText(svg, cx, H - M.b + 17, c.label, {'text-anchor': 'middle'});
+      svgText(svg, cx, Y(totals[i]) - 7, (cfg.fmt || compactNum)(totals[i]), {'text-anchor': 'middle', class: 'lbl-strong'});
+      const hit = svgEl('rect', {x: M.l + band * i, y: M.t, width: band, height: H - M.t - M.b, fill: 'transparent', tabindex: 0}, svg);
+      const on = evt => { segs.forEach(s => s.setAttribute('fill-opacity', .85)); showTip(evt, t => { tipHead(t, c.tip || c.label); cfg.keys.slice().reverse().forEach(k => tipRow(t, k.color, (cfg.fmt || compactNum)(c.v[k.id] || 0), k.name)); tipRow(t, null, (cfg.fmt || compactNum)(totals[i]), 'total'); }); };
+      const off = () => { segs.forEach(s => s.setAttribute('fill-opacity', 1)); hideTip(); };
+      hit.addEventListener('pointermove', on); hit.addEventListener('pointerleave', off); hit.addEventListener('blur', off);
+      hit.addEventListener('focus', () => { const rr = hit.getBoundingClientRect(); on({pageX: rr.left + window.scrollX + rr.width / 2, pageY: rr.top + window.scrollY}); });
+    });
+    svgEl('line', {x1: M.l, x2: W - M.r, y1: H - M.b, y2: H - M.b, stroke: '#3A3E45'}, svg);
+    addTableToggle(el, [cfg.xName || 'Year', ...cfg.keys.map(k => k.name), 'Total'], cols.map((c, i) => [c.label, ...cfg.keys.map(k => (cfg.fmt || compactNum)(c.v[k.id] || 0)), (cfg.fmt || compactNum)(totals[i])]));
+  };
+  __charts.set(el, render); render();
+}
+
+/* ---- stacked horizontal bars, one row per item (compare) ---- */
+function stackedRows(el, cfg){
+  el.textContent = '';
+  el.appendChild(legendEl(cfg.keys.map(k => ({name: k.name, color: k.color}))));
+  const totals = cfg.rows.map(r => cfg.keys.reduce((s, k) => s + (r.v[k.id] || 0), 0));
+  const max = Math.max(1, ...totals);
+  const list = document.createElement('div'); list.style.cssText = 'display:grid;gap:14px;margin-top:6px';
+  cfg.rows.forEach((r, i) => {
+    const row = document.createElement('div');
+    const top = document.createElement('div'); top.style.cssText = 'display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--ink-dim);margin-bottom:6px;align-items:center';
+    const l = document.createElement('span'); l.style.cssText = 'display:flex;align-items:center;gap:7px;min-width:0';
+    if (r.color){ const dot = document.createElement('i'); dot.style.cssText = `width:9px;height:9px;border-radius:50%;flex:none;background:${r.color}`; l.appendChild(dot); }
+    const lt = document.createElement('span'); lt.textContent = r.label; lt.style.cssText = 'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'; l.appendChild(lt);
+    const v = document.createElement('b'); v.textContent = (cfg.fmt || compactNum)(totals[i]) + (cfg.suffix || ''); v.style.cssText = 'color:var(--paper);font-weight:600;flex:none';
+    top.appendChild(l); top.appendChild(v);
+    const track = document.createElement('div'); track.style.cssText = `display:flex;gap:2px;height:16px;width:${Math.max(4, totals[i] / max * 100)}%`;
+    cfg.keys.forEach((k, ki) => {
+      const val = r.v[k.id] || 0; if (val <= 0) return;
+      const seg = document.createElement('div'); seg.style.cssText = `flex:${val} 1 0;background:${k.color};min-width:2px`;
+      if (ki === cfg.keys.length - 1 || cfg.keys.slice(ki + 1).every(k2 => !(r.v[k2.id] > 0))) seg.style.borderRadius = '0 4px 4px 0';
+      seg.tabIndex = 0;
+      const on = evt => showTip(evt, t => { tipHead(t, r.label); tipRow(t, k.color, (cfg.fmt || compactNum)(val), k.name); tipRow(t, null, (cfg.fmt || compactNum)(totals[i]), 'total'); });
+      seg.addEventListener('pointermove', on); seg.addEventListener('pointerleave', hideTip);
+      seg.addEventListener('focus', () => { const rr = seg.getBoundingClientRect(); on({pageX: rr.left + window.scrollX + rr.width / 2, pageY: rr.top + window.scrollY}); }); seg.addEventListener('blur', hideTip);
+      track.appendChild(seg);
+    });
+    row.appendChild(top); row.appendChild(track); list.appendChild(row);
+  });
+  el.appendChild(list);
+  addTableToggle(el, ['Car', ...cfg.keys.map(k => k.name), 'Total'], cfg.rows.map((r, i) => [r.label, ...cfg.keys.map(k => (cfg.fmt || compactNum)(r.v[k.id] || 0)), (cfg.fmt || compactNum)(totals[i])]));
+}
+
 /* ============== LIVE DATA: NHTSA, EPA, Wikimedia ============== */
 const __mem = new Map();
 const __inflight = new Map();
@@ -1247,7 +1596,8 @@ async function getSafety(m, year){
     for (const veh of (v.Results || []).slice(0, 3)){
       const d = await getData(`https://api.nhtsa.gov/SafetyRatings/VehicleId/${veh.VehicleId}`);
       const r = (d.Results || [])[0];
-      if (r && /^\d$/.test(String(r.OverallRating))) return {overall: +r.OverallRating, front: r.OverallFrontCrashRating, side: r.OverallSideCrashRating, rollover: r.RolloverRating, desc: veh.VehicleDescription, id: veh.VehicleId};
+      if (r && /^\d$/.test(String(r.OverallRating))) return {overall: +r.OverallRating, front: r.OverallFrontCrashRating, side: r.OverallSideCrashRating, rollover: r.RolloverRating, rollRisk: r.RolloverPossibility, desc: veh.VehicleDescription, id: veh.VehicleId,
+        esc: r.NHTSAElectronicStabilityControl, fcw: r.NHTSAForwardCollisionWarning, ldw: r.NHTSALaneDepartureWarning, invest: +r.InvestigationCount || 0, picture: /^https:\/\//.test(r.VehiclePicture || '') ? r.VehiclePicture : ''};
     }
   }
   return {overall: null};
@@ -1262,13 +1612,14 @@ async function getEpa(m, year){
   const md = await getData(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=${year}&make=${encodeURIComponent(make)}`, 'xml');
   const models = xmlVals(md, 'menuItem > value').filter(v => modelMatches(v, m, year)).slice(0, 6);
   if (!models.length) return null;
-  const ids = [];
+  const ids = []; let fails = 0;
   await Promise.all(models.map(async mod => {
     try {
       const op = await getData(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${year}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(mod)}`, 'xml');
       op.querySelectorAll('menuItem').forEach(it => ids.push({id: it.querySelector('value')?.textContent, text: it.querySelector('text')?.textContent, model: mod}));
-    } catch(e){}
+    } catch(e){ fails++; }
   }));
+  if (!ids.length && fails) throw new Error('EPA unavailable');
   const pick = ids.slice(0, 10);
   const items = (await Promise.all(pick.map(async o => {
     try {
@@ -1277,8 +1628,10 @@ async function getEpa(m, year){
       const fuel = q('fuelType1') || q('fuelType') || '';
       const ev = /electric/i.test(fuel) || q('atvType') === 'EV';
       return {label: o.model + ' — ' + o.text, comb: +q('comb08'), city: +q('city08'), hwy: +q('highway08'), ev, range: +(q('range') || 0), fuel};
-    } catch(e){ return null; }
-  }))).filter(x => x && x.comb > 0);
+    } catch(e){ return {err: 1}; }
+  }))).filter(x => x && (x.err || x.comb > 0));
+  if (items.length && items.every(x => x.err)) throw new Error('EPA unavailable');
+  for (let i = items.length - 1; i >= 0; i--) if (items[i].err) items.splice(i, 1);
   if (!items.length) return null;
   const combs = items.map(i => i.comb);
   return {min: Math.min(...combs), max: Math.max(...combs), ev: items.every(i => i.ev), items: items.sort((a, b) => b.comb - a.comb)};
@@ -1301,12 +1654,13 @@ const WIKI = {
 };
 function wikiTitle(m){ return WIKI[m.brand + '|' + m.name] || (brandById(m.brand).name + ' ' + m.name); }
 const BAD_IMG = /(interior|dashboard|cockpit|engine|motor_|trunk|boot|badge|logo|emblem|wheel|seat|steering|console|instrument|gauge|grille_detail|tail ?light|headlight|key|diagram|map|chart|sales|factory|plant|assembly|crash|test|\.svg|\.gif|\.tif)/i;
-async function getPhoto(m, gen){
+async function getPhoto(m, gen){ const l = await getPhotos(m, gen); return l && l.length ? l[0] : null; }
+async function getPhotos(m, gen){
   const title = wikiTitle(m);
-  const key = 'photo|' + m.brand + '|' + m.name + '|' + gen.label;
+  const key = 'photos|' + m.brand + '|' + m.name + '|' + gen.label;
   if (__mem.has(key)) return __mem.get(key);
   const cached = ssGet('dw:' + key); if (cached !== null && cached !== undefined) return cached;
-  let res = null;
+  let res = [];
   try {
     const ml = await getData('https://en.wikipedia.org/api/rest_v1/page/media-list/' + encodeURIComponent(title.replace(/ /g, '_')));
     const nameTok = compact(m.name.split('/')[0]);
@@ -1341,13 +1695,47 @@ async function getPhoto(m, gen){
         const lic = (md.LicenseShortName && md.LicenseShortName.value) || '';
         if (!lic || /fair use|non-free/i.test(lic)) continue;
         const strip = h => (new DOMParser().parseFromString(h || '', 'text/html').body.textContent || '').trim();
-        res = {src: info.thumburl || info.url, page: info.descriptionurl, artist: strip(md.Artist && md.Artist.value).slice(0, 80) || 'Unknown author', license: lic, licenseUrl: (md.LicenseUrl && md.LicenseUrl.value) || '', file: norm(c.t).replace(/^File:/, '')};
-        break;
+        res.push({src: info.thumburl || info.url, page: info.descriptionurl, artist: strip(md.Artist && md.Artist.value).slice(0, 80) || 'Unknown author', license: lic, licenseUrl: (md.LicenseUrl && md.LicenseUrl.value) || '', file: norm(c.t).replace(/^File:/, '')});
+        if (res.length >= 4) break;
       }
     }
-  } catch(e){ res = null; }
+  } catch(e){ res = []; }
   __mem.set(key, res); ssSet('dw:' + key, res);
   return res;
+}
+
+/* ---- VIN decode (NHTSA vPIC) ---- */
+const VIN_MAKE = {'MERCEDESBENZ': 'mercedes', 'VOLKSWAGEN': 'vw', 'LANDROVER': 'landrover', 'MINI': 'mini', 'RAM': 'ram', 'ALFAROMEO': 'alfaromeo'};
+function vinCheck(vin){
+  const map = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,J:1,K:2,L:3,M:4,N:5,P:7,R:9,S:2,T:3,U:4,V:5,W:6,X:7,Y:8,Z:9};
+  const w = [8,7,6,5,4,3,2,10,0,9,8,7,6,5,4,3,2];
+  let sum = 0;
+  for (let i = 0; i < 17; i++){ const c = vin[i]; const v = /\d/.test(c) ? +c : map[c]; if (v === undefined) return false; sum += v * w[i]; }
+  const r = sum % 11; return vin[8] === (r === 10 ? 'X' : String(r));
+}
+async function decodeVin(vin){
+  const j = await getData(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/${encodeURIComponent(vin)}?format=json`);
+  const r = (j.Results || [])[0] || {};
+  const pick = k => (r[k] && String(r[k]).trim() && r[k] !== 'Not Applicable') ? String(r[k]).trim() : '';
+  const out = {make: pick('Make'), model: pick('Model'), year: +pick('ModelYear') || null, trim: [pick('Trim'), pick('Series')].filter(Boolean).join(' '),
+    body: pick('BodyClass'), drive: pick('DriveType'), engine: [pick('DisplacementL') ? (+pick('DisplacementL')).toFixed(1) + 'L' : '', pick('EngineCylinders') ? pick('EngineCylinders') + '-cyl' : '', pick('EngineHP') ? Math.round(+pick('EngineHP')) + ' hp' : ''].filter(Boolean).join(' '),
+    fuel: pick('FuelTypePrimary'), electrification: pick('ElectrificationLevel'), trans: [pick('TransmissionStyle'), pick('TransmissionSpeeds') ? pick('TransmissionSpeeds') + '-speed' : ''].filter(Boolean).join(', '),
+    plant: [pick('PlantCity'), pick('PlantState'), pick('PlantCountry')].filter(Boolean).map(s => titleCase(s)).join(', '), maker: pick('Manufacturer'), doors: pick('Doors'), seats: pick('Seats'),
+    errorCode: pick('ErrorCode'), errorText: pick('ErrorText')};
+  const mk = compact(out.make);
+  const brand = BRANDS.find(b => compact(b.name) === mk) || brandById(VIN_MAKE[mk] || '') || null;
+  let model = null, gen = null;
+  if (brand && out.model && out.year){
+    const cands = modelsForBrand(brand.id).filter(m => modelMatches(out.model, m, out.year));
+    cands.sort((a, b) => b.name.length - a.name.length);
+    for (const m of cands){ const g = m.gens.find(g => out.year >= g.y0 && out.year <= g.y1); if (g){ model = m; gen = g; break; } }
+    if (!model && cands.length){ model = cands[0]; }
+  }
+  return Object.assign(out, {brand, m: model, g: gen});
+}
+async function recallsByMakeModel(make, model, year){
+  const j = await getData(`https://api.nhtsa.gov/recalls/recallsByVehicle?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&modelYear=${year}`);
+  return (j.results || []).map(r => ({id: r.NHTSACampaignNumber, component: r.Component || '', summary: r.Summary || '', consequence: r.Consequence || '', remedy: r.Remedy || '', date: r.ReportReceivedDate || '', parkIt: !!r.parkIt, parkOutside: !!r.parkOutSide, ota: !!r.overTheAirUpdate}));
 }
 
 /* ============== STATE / HELPERS ============== */
@@ -1439,6 +1827,7 @@ function goView(name, keepScroll){
   document.querySelectorAll('nav.tabs button').forEach(b => { const on = b.dataset.view === name; b.classList.toggle('active', on); b.setAttribute('aria-current', on ? 'page' : 'false'); });
   if (!keepScroll) window.scrollTo({top: 0, behavior: 'instant'});
   if (name === 'compare') renderCompare();
+  if (name === 'finder' && !document.getElementById('f-results').children.length) runFinder();
   if (name === 'models' && !document.getElementById('model-grid').children.length) renderModelGrid();
   if (name === 'guide' && !document.getElementById('guide-detail').children.length && currentGuideSelection()) renderGuideDetail();
   updateHash(name);
@@ -1503,14 +1892,17 @@ function nextHeroPick(){
 }
 
 /* ============== BRANDS VIEW ============== */
-let brandSeg = 'All';
+let brandSeg = 'All', brandShowAll = false;
+const isPhone = () => window.matchMedia('(max-width: 760px)').matches;
+let __wasPhone = null;
+window.addEventListener('resize', () => { const p = isPhone(); if (__wasPhone !== null && p !== __wasPhone){ renderBrandGrid(); renderBrandScatter(); } __wasPhone = p; });
 function renderBrandScatter(){
   const el = document.getElementById('brand-scatter');
   const groups = [{id: 'Mainstream', name: 'Mainstream brands', color: SLOT_COLORS[0]}, {id: 'Luxury', name: 'Luxury brands', color: SLOT_COLORS[1]}];
   scatterChart(el, {
     title: 'Brand reliability score versus five-year value retained',
     groups, xLabel: 'Reliability score (0–10)', yLabel: '5-yr value kept', yFmt: v => v + '%', xFmt: v => v.toFixed(0),
-    labelIds: ['toyota', 'lexus', 'porsche', 'landrover', 'tesla', 'honda', 'jeep', 'bmw'],
+    labelIds: isPhone() ? ['toyota', 'porsche', 'landrover', 'tesla', 'jeep'] : ['toyota', 'lexus', 'porsche', 'landrover', 'tesla', 'honda', 'jeep', 'bmw'],
     points: BRANDS.map(b => ({id: b.id, x: b.score, y: b.kept5, label: b.name, group: b.seg, onClick: () => goBrandGuide(b.id)})),
     tipRows: p => { const b = brandById(p.id); return [[b.score.toFixed(1), 'reliability score'], [b.kept5 + '%', 'value kept after 5 years'], [fmtMoney(b.upkeep), 'typical yearly upkeep']]; },
     tableHead: ['Brand', 'Segment', 'Reliability', '5-yr value kept', 'Yearly upkeep'],
@@ -1522,6 +1914,10 @@ function renderBrandGrid(){
   let list = BRANDS.filter(b => brandSeg === 'All' || b.seg === brandSeg);
   const sorters = {score: (a, b) => b.score - a.score, kept: (a, b) => b.kept5 - a.kept5, upkeep: (a, b) => a.upkeep - b.upkeep, name: (a, b) => a.name.localeCompare(b.name)};
   list = list.slice().sort(sorters[sort]);
+  const limit = isPhone() && !brandShowAll ? 8 : list.length;
+  const moreBtn = document.getElementById('brand-more');
+  if (moreBtn){ moreBtn.hidden = list.length <= limit; moreBtn.textContent = `Show all ${list.length} brands`; }
+  list = list.slice(0, limit);
   document.getElementById('brand-grid').innerHTML = list.map(b => {
     const color = tierColor(b.score);
     const ms = modelsForBrand(b.id).slice().sort((x, y) => TIER_RANK[bestGen(y).tier] - TIER_RANK[bestGen(x).tier]);
@@ -1601,7 +1997,60 @@ function renderModelGrid(){
   document.getElementById('load-more').hidden = list.length <= modelLimit;
 }
 
+/* ============== COST OF OWNERSHIP ============== */
+const COST_KEYS = [
+  {id: 'dep', name: 'Depreciation', color: '#3987e5'},
+  {id: 'fuel', name: 'Fuel or charging', color: '#d95926'},
+  {id: 'ins', name: 'Insurance', color: '#199e70'},
+  {id: 'maint', name: 'Maintenance & repairs', color: '#c98500'}
+];
+const FUEL = {regular: 3.20, premium: 4.00, kwh: 0.17};
+const TIER_UPKEEP = {best: 0.9, good: 1.0, caution: 1.2, avoid: 1.45};
+function powertrain(m, g){
+  const e = (g ? g.engine : '') + ' ' + m.name;
+  if (isEv(m, g)) return 'ev';
+  if (/plug-?in|phev|prime|4xe|recharge/i.test(e)) return 'phev';
+  if (/hybrid/i.test(e)) return 'hybrid';
+  return 'gas';
+}
+function firstHp(g){ const n = String(g.hp || '').match(/\d+/g); return n ? Math.max(...n.map(Number)) : 200; }
+function minHp(g){ const n = String(g.hp || '').match(/\d+/g); return n ? Math.min(...n.map(Number)) : 180; }
+function estMpg(m, g){
+  const pt = powertrain(m, g), k = BODY_KEY(m.body), hp = minHp(g);
+  if (pt === 'ev') return 110;
+  let base = {Sedan: 31, Hatchback: 32, SUV: 25, Truck: 19, Minivan: 22, Coupe: 25, Convertible: 24, Wagon: 28}[k] || 26;
+  if (hp > 300) base -= 5; else if (hp > 240) base -= 2; else if (hp < 160) base += 3;
+  if (pt === 'hybrid') base = Math.round(base * 1.45);
+  if (pt === 'phev') base = Math.round(base * 1.55);
+  return Math.max(12, base);
+}
+function premiumFuel(m, g){ return isLux(m) || /coupe|convertible|sports/i.test(m.body) || firstHp(g) > 330; }
+function valueAtAge(m, g, year, age){ return priceBasis(m, g, year) * curveAt(modelKept(m), age, isLux(m)) * TIER_MULT[g.tier]; }
+function costToOwn(m, g, year, opts){
+  opts = opts || {};
+  const miles = opts.miles || 12000, pt = powertrain(m, g);
+  const mpg = opts.mpg || estMpg(m, g);
+  const brand = brandById(m.brand);
+  const fuelPrice = opts.fuelPrice || (premiumFuel(m, g) ? FUEL.premium : FUEL.regular);
+  const insMult = (isLux(m) ? 1.2 : 1) * (/coupe|convertible|sports/i.test(m.body) ? 1.15 : 1) * (pt === 'ev' ? 1.1 : 1);
+  const a0 = ageOf(year), years = [];
+  for (let k = 0; k < 5; k++){
+    const a = a0 + k, v = valueAtAge(m, g, year, a), v2 = valueAtAge(m, g, year, a + 1);
+    const fuel = pt === 'ev' ? miles / mpg * 33.7 * FUEL.kwh : pt === 'phev' ? (miles * .45 / 105 * 33.7 * FUEL.kwh + miles * .55 / mpg * fuelPrice) : miles / mpg * fuelPrice;
+    const ins = (1050 + v * 0.026) * insMult;
+    const maint = brand.upkeep * (0.75 + 0.11 * a) * TIER_UPKEEP[g.tier] * (miles / 12000) ** 0.6 * (pt === 'ev' ? 0.7 : 1);
+    years.push({label: 'Year ' + (k + 1), tip: `Year ${k + 1} of owning (car aged ${Math.round(a)}–${Math.round(a + 1)})`, v: {dep: Math.max(0, v - v2), fuel, ins, maint}});
+  }
+  const sum = id => years.reduce((s, y) => s + y.v[id], 0);
+  const total = COST_KEYS.reduce((s, k) => s + sum(k.id), 0);
+  return {years, total, perMonth: total / 60, parts: Object.fromEntries(COST_KEYS.map(k => [k.id, sum(k.id)])), mpg, fuelPrice, miles, pt, buy: estValue(m, g, year)};
+}
+
+
 /* ============== GUIDE VIEW ============== */
+
+const GUIDE_SECTIONS = [['g-sec-top', 'Overview'], ['g-sec-issues', 'Issues & value'], ['g-sec-cost', 'Cost to own'], ['g-sec-live', 'Live data'], ['g-sec-years', 'Model years'], ['g-sec-similar', 'Alternatives']];
+
 function populateBrandSelect(sel){ sel.innerHTML = BRANDS.slice().sort((a, b) => a.name.localeCompare(b.name)).map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join(''); }
 function populateModelSelect(sel, brandId){ sel.innerHTML = modelsForBrand(brandId).map(m => `<option value="${esc(m.name)}">${esc(m.name)} (${esc(m.body)})</option>`).join(''); }
 function populateGenSelect(sel, model){ sel.innerHTML = model.gens.map((g, i) => `<option value="${i}">${esc(g.label)} · ${g.y0}–${g.y1 >= CURRENT_YEAR ? 'present' : g.y1}</option>`).join(''); }
@@ -1642,19 +2091,23 @@ function renderGuideTimeline(){
     </button>`;
   }).join('');
 }
-let guideToken = 0;
+let guideToken = 0, guideEpaMpg = null;
 function renderGuideDetail(){
   renderGuideTimeline();
   const {brand, model, gen} = currentGuideSelection();
-  const token = ++guideToken;
+  const token = ++guideToken; guideEpaMpg = null;
   const yr = defaultYear(gen);
   const [lo, hi] = valueRange(model, gen, yr);
   const issues = gen.issues.filter(Boolean);
   const issuesNone = issues.length === 1 && /^(none major|too new)/i.test(issues[0]);
+  document.getElementById('g-jump').innerHTML = GUIDE_SECTIONS.map(([id, t]) => `<a href="#${id}" onclick="event.preventDefault(); jumpTo('${id}')">${t}</a>`).join('');
   document.getElementById('guide-detail').innerHTML = `
   <article class="detail-card">
-    <div class="detail-hero">
-      <div class="media" id="g-media">${modelArt(model, gen)}<span class="media-tag">Illustration</span></div>
+    <div class="detail-hero" id="g-sec-top">
+      <div class="media-col">
+        <div class="media" id="g-media">${modelArt(model, gen)}<span class="media-tag">Illustration</span></div>
+        <div class="thumbs" id="g-thumbs" hidden></div>
+      </div>
       <div class="detail-info">
         <div class="detail-head">
           <div><h3>${esc(brand.name)} ${esc(model.name)}</h3><div class="sub">${esc(gen.label)} · ${gen.y0}–${gen.y1 >= CURRENT_YEAR ? 'present' : gen.y1} · ${esc(model.body)}</div></div>
@@ -1668,21 +2121,25 @@ function renderGuideDetail(){
           <div><div class="k">Recommended pick</div><div class="v">${esc(gen.pick)}</div></div>
           <div><div class="k">Mileage guidance</div><div class="v">${esc(gen.mileage)}</div></div>
         </div>
-        <div class="action-row" style="margin-top:18px">
+        <div class="quick-stats">
+          <div class="gauge">${gaugeSvg(brand.score / 10, tierColor(brand.score), {size: 58, stroke: 6})}<div class="readout"><b style="font-size:16px;color:${tierColor(brand.score)}">${brand.score.toFixed(1)}</b></div></div>
+          <div><b>${esc(brand.name)} reliability</b><span>${modelKept(model)}% of value kept after 5 years · ${fmtMoney(brand.upkeep)}/yr typical upkeep</span></div>
+        </div>
+        <div class="action-row" style="margin-top:16px">
           <button class="btn small" onclick="sendToDealChecker()">Check a deal on this car</button>
           <button class="btn ghost small" onclick="addToCompare()">Add to compare</button>
         </div>
       </div>
     </div>
-    <div class="detail-body">
+    <div class="detail-body" id="g-sec-issues">
       <div class="two-col">
         <div>
           <div class="sub-h">Known issues</div>
           <div class="sub-p">What owners and recall records point to for this generation.</div>
           <ul class="issues">${issues.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
           ${gen.fix ? `<div class="cost-box"><b>Typical repair cost:</b> ${esc(gen.fix)}</div>` : (issuesNone ? `<div class="cost-box">No common big-ticket repairs flagged for this generation — budget for normal maintenance (about ${fmtMoney(brand.upkeep)} a year for ${esc(brand.name)}).</div>` : '')}
-          <div class="sub-h" style="margin-top:22px">${esc(brand.name)} overall</div>
-          <ul class="issues">${brand.strengths.map(s => `<li>${esc(s)}</li>`).join('')}${brand.watch.map(s => `<li>${esc(s)}</li>`).join('')}</ul>
+          <details class="more" open><summary>${esc(brand.name)} overall</summary>
+          <ul class="issues">${brand.strengths.map(s => `<li>${esc(s)}</li>`).join('')}${brand.watch.map(s => `<li>${esc(s)}</li>`).join('')}</ul></details>
         </div>
         <div>
           <div class="sub-h">Depreciation</div>
@@ -1691,7 +2148,31 @@ function renderGuideDetail(){
         </div>
       </div>
     </div>
+    <div class="detail-body cost-sec" id="g-sec-cost">
+      <div class="cost-head">
+        <div><div class="sub-h">5-year cost to own</div><div class="sub-p" id="g-cost-sub">Buying a ${yr} today and keeping it five years.</div></div>
+        <div class="cost-ctrl">
+          <div><label class="fieldlabel" for="g-cost-year">Model year</label><select id="g-cost-year" class="compact">${yearsOf(gen).map(y => `<option${y === yr ? ' selected' : ''}>${y}</option>`).join('')}</select></div>
+          <div><label class="fieldlabel" for="g-cost-miles">Miles a year</label><select id="g-cost-miles" class="compact"><option>8000</option><option selected>12000</option><option>15000</option><option>20000</option></select></div>
+        </div>
+      </div>
+      <div class="cost-grid">
+        <div class="cost-total" id="g-cost-total"></div>
+        <div id="g-cost-chart"></div>
+      </div>
+      <p class="note" id="g-cost-note"></p>
+    </div>
     <div class="live" id="g-live"></div>
+    <div class="detail-body" id="g-sec-years">
+      <div class="sub-h">Model years at a glance</div>
+      <div class="sub-p">Every year of this generation: estimated value today, NHTSA recalls and owner complaints. Fewer complaints for its age = a stronger year.</div>
+      <div id="g-years"><div class="note">Loading…</div></div>
+    </div>
+    <div class="detail-body" id="g-sec-similar">
+      <div class="sub-h">Cars to consider instead</div>
+      <div class="sub-p">Same kind of car, similar money, rated as well or better for that model year.</div>
+      <div class="similar" id="g-similar"></div>
+    </div>
   </article>`;
   // depreciation chart
   const base = priceBasis(model, gen, yr); const lux = isLux(model);
@@ -1708,32 +2189,121 @@ function renderGuideDetail(){
     ],
     marker: ageNow > 0 && ageNow <= 12 ? {x: ageNow, y: thisCar[ageNow][1], label: 'Today'} : null
   });
+  const rc = () => renderGuideCost(model, gen);
+  document.getElementById('g-cost-year').onchange = rc; document.getElementById('g-cost-miles').onchange = rc;
+  rc();
   renderLivePanel(token, model, gen, yr);
-  loadGuidePhoto(token, model, gen);
+  loadGuidePhotos(token, model, gen);
+  renderSimilar(model, gen, yr);
+  loadYearGlance(token, model, gen);
   updateHash('guide');
 }
-async function loadGuidePhoto(token, model, gen){
-  const p = await getPhoto(model, gen);
-  if (token !== guideToken || !p) return;
-  const media = document.getElementById('g-media'); if (!media) return;
+function jumpTo(id){ const e = document.getElementById(id); if (!e) return; const top = e.getBoundingClientRect().top + window.scrollY - (document.querySelector('header').offsetHeight + 12); window.scrollTo({top, behavior: 'smooth'}); }
+function renderGuideCost(model, gen){
+  const year = +document.getElementById('g-cost-year').value, miles = +document.getElementById('g-cost-miles').value;
+  const useEpa = guideEpaMpg && guideEpaMpg.year === year;
+  const c = costToOwn(model, gen, year, {miles, mpg: useEpa ? guideEpaMpg.mpg : null});
+  document.getElementById('g-cost-sub').textContent = `Buying a ${year} for about ${fmtK(c.buy)} today and keeping it five years, ${miles.toLocaleString('en-US')} miles a year.`;
+  document.getElementById('g-cost-total').innerHTML = `
+    <div class="k">Total over 5 years</div><div class="big-num">${fmtK(c.total)}</div>
+    <div class="per"></div>
+    <ul class="cost-parts">${COST_KEYS.map(k => `<li><i style="background:${k.color}"></i><span>${k.name}</span><b>${fmtK(c.parts[k.id])}</b></li>`).join('')}</ul>`;
+  document.querySelector('#g-cost-total .per').textContent = `${fmtMoney(c.perMonth)} a month · ${(c.total / (miles * 5)).toLocaleString('en-US', {style: 'currency', currency: 'USD'})} a mile`;
+  stackedColumns(document.getElementById('g-cost-chart'), {title: 'Cost to own by year', keys: COST_KEYS, cols: c.years, fmt: v => fmtK(v), yFmt: v => fmtK(v), height: 240, xName: 'Year of ownership'});
+  const fuelTxt = c.pt === 'ev' ? `${c.mpg} MPGe at ${(FUEL.kwh * 100).toFixed(0)}¢/kWh home charging` : `${c.mpg} mpg${useEpa ? ' (EPA)' : ' (estimated)'} on ${premiumFuel(model, gen) ? 'premium' : 'regular'} at $${c.fuelPrice.toFixed(2)}/gal`;
+  document.getElementById('g-cost-note').textContent = `Assumes ${fuelTxt}; insurance from a national-average base scaled by the car’s value; maintenance from the ${brandById(model.brand).name} upkeep index, rising with age. Directional, not a quote — your insurance and fuel prices will differ.`;
+}
+async function loadGuidePhotos(token, model, gen){
+  const list = await getPhotos(model, gen);
+  if (token !== guideToken || !list || !list.length) return;
+  guidePhotoList = list.slice(); showGuidePhoto(token, 0);
+}
+let guidePhotoList = [];
+function addGuidePhoto(token, p){ if (token !== guideToken) return; if (!guidePhotoList.some(x => x.src === p.src)){ guidePhotoList.push(p); if (guidePhotoList.length === 1) showGuidePhoto(token, 0); else renderThumbs(token); } }
+function renderThumbs(token){
+  const th = document.getElementById('g-thumbs'); if (!th) return;
+  th.hidden = guidePhotoList.length < 2;
+  th.innerHTML = '';
+  guidePhotoList.forEach((p, i) => {
+    const b = document.createElement('button'); b.className = 'thumb'; b.setAttribute('aria-label', 'Show photo ' + (i + 1));
+    const im = new Image(); im.src = p.src; im.alt = ''; im.referrerPolicy = 'no-referrer'; im.loading = 'lazy'; im.onerror = () => b.remove();
+    b.appendChild(im); b.onclick = () => showGuidePhoto(token, i); th.appendChild(b);
+  });
+}
+function showGuidePhoto(token, i){
+  const p = guidePhotoList[i]; const media = document.getElementById('g-media'); if (!media || !p || token !== guideToken) return;
+  media.querySelectorAll('img, .credit').forEach(e => e.remove());
+  const {brand, model, gen} = currentGuideSelection();
   const img = new Image();
-  img.alt = brandById(model.brand).name + ' ' + model.name + ' (' + gen.label + ') — photo';
+  img.alt = brand.name + ' ' + model.name + ' (' + gen.label + ') — photo';
   img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
   img.onload = () => { if (token !== guideToken) return; img.classList.add('loaded'); media.querySelector('.media-tag').textContent = 'Photo'; };
-  img.onerror = () => img.remove();
-  img.src = p.src;
-  media.appendChild(img);
+  img.onerror = () => { img.remove(); guidePhotoList.splice(i, 1); renderThumbs(token); };
+  img.src = p.src; media.appendChild(img);
   const cr = document.createElement('div'); cr.className = 'credit';
-  cr.appendChild(document.createTextNode('Photo: ' + p.artist + ' · '));
-  const a = document.createElement('a'); a.href = p.page; a.target = '_blank'; a.rel = 'noopener'; a.textContent = p.license + ', via Wikimedia Commons';
-  cr.appendChild(a); media.appendChild(cr);
+  if (p.nhtsa){ cr.textContent = 'Photo: NHTSA (U.S. government, public domain) · tested vehicle'; }
+  else {
+    cr.appendChild(document.createTextNode('Photo: ' + p.artist + ' · '));
+    const a = document.createElement('a'); a.href = p.page; a.target = '_blank'; a.rel = 'noopener'; a.textContent = p.license + ', via Wikimedia Commons';
+    cr.appendChild(a);
+  }
+  media.appendChild(cr);
+  renderThumbs(token);
+  document.querySelectorAll('#g-thumbs .thumb').forEach((b, k) => b.classList.toggle('on', k === i));
 }
+function similarCars(model, gen, yr, n){
+  const k = BODY_KEY(model.body), val = estValue(model, gen, yr), out = [];
+  MODELS.forEach(m => {
+    if (m === model || BODY_KEY(m.body) !== k) return;
+    const g = m.gens.find(g => yr >= g.y0 && yr <= lastYear(g)); if (!g) return;
+    if (TIER_RANK[g.tier] < TIER_RANK[gen.tier] || TIER_RANK[g.tier] < 2) return;
+    const v = estValue(m, g, yr), d = Math.abs(v - val) / val; if (d > 0.3) return;
+    out.push({m, g, y: yr, v, s: TIER_RANK[g.tier] * 2 + brandById(m.brand).score / 2 - d * 4 + (m.brand === model.brand ? -0.5 : 0)});
+  });
+  return out.sort((a, b) => b.s - a.s).slice(0, n || 4);
+}
+function renderSimilar(model, gen, yr){
+  const el = document.getElementById('g-similar');
+  const list = similarCars(model, gen, yr, 4);
+  if (!list.length){ el.innerHTML = `<div class="note">Nothing rated as well in the same class and price range for ${yr} — this is already one of the stronger choices.</div>`; return; }
+  el.innerHTML = list.map(x => `<button class="sim-card" onclick="openGuideIdx(${MODELS.indexOf(x.m)}, ${x.m.gens.indexOf(x.g)})">
+      <div class="sim-art">${modelArt(x.m, x.g)}</div>
+      <div class="sim-body"><div class="model-card-brand">${esc(brandById(x.m.brand).name)}</div><div class="sim-name">${x.y} ${esc(x.m.name)}</div>
+      <div class="sim-meta"><span class="stamp-pill stamp-${x.g.tier}">${TIER_LABEL[x.g.tier]}</span><b>${fmtK(x.v * .9)}–${fmtK(x.v * 1.1)}</b></div></div>
+    </button>`).join('');
+}
+async function loadYearGlance(token, model, gen){
+  const years = yearsOf(gen).slice(0, 10);
+  const el = () => document.getElementById('g-years');
+  const rows = await Promise.all(years.map(async y => {
+    const [r, c] = await Promise.all([getRecalls(model, y).then(x => x.list.length).catch(() => null), getComplaints(model, y).then(x => x.count).catch(() => null)]);
+    return {y, rec: r, cmp: c, val: estValue(model, gen, y)};
+  }));
+  if (token !== guideToken || !el()) return;
+  if (rows.every(r => r.rec === null && r.cmp === null)){ el().innerHTML = '<div class="err">Couldn’t reach NHTSA just now — estimated values only.</div>'; }
+  // complaints per year on the road (newer cars have had less time to collect complaints)
+  rows.forEach(r => { const onRoad = Math.max(0.75, CURRENT_YEAR - r.y + 0.5); r.rate = r.cmp === null ? null : (r.cmp + 15 * (r.rec || 0)) / onRoad; });
+  const rated = rows.filter(r => r.rate !== null && CURRENT_YEAR - r.y >= 2);
+  const sorted = rated.slice().sort((a, b) => a.rate - b.rate);
+  const best = rated.length >= 3 ? sorted[0].y : null, worst = rated.length >= 3 && sorted[sorted.length - 1].rate > sorted[0].rate * 1.6 ? sorted[sorted.length - 1].y : null;
+  const maxC = Math.max(1, ...rows.map(r => r.cmp || 0)), maxR = Math.max(1, ...rows.map(r => r.rec || 0));
+  el().innerHTML = `<div class="yg" role="table" aria-label="Model years at a glance">
+    <div class="yg-row yg-head" role="row"><span role="columnheader">Year</span><span role="columnheader">Est. value</span><span role="columnheader">Recalls</span><span role="columnheader">Complaints</span><span role="columnheader">Verdict</span></div>
+    ${rows.map(r => `<button class="yg-row${r.y === best ? ' good' : ''}${r.y === worst ? ' bad' : ''}" role="row" onclick="pickLiveYear(${r.y})">
+      <span role="cell" class="mono yg-y">${r.y}</span>
+      <span role="cell" class="mono">${fmtK(r.val * .9)}–${fmtK(r.val * 1.1)}</span>
+      <span role="cell" class="yg-bar"><i style="width:${r.rec ? Math.max(8, r.rec / maxR * 100) : 0}%;background:var(--s2)"></i><b>${r.rec === null ? '—' : r.rec}</b></span>
+      <span role="cell" class="yg-bar"><i style="width:${r.cmp ? Math.max(4, r.cmp / maxC * 100) : 0}%;background:var(--s1)"></i><b>${r.cmp === null ? '—' : r.cmp.toLocaleString('en-US')}</b></span>
+      <span role="cell" class="yg-v">${r.y === best ? '✓ Fewest problems' : r.y === worst ? '⚠ Most problems' : CURRENT_YEAR - r.y < 2 ? 'Too new to judge' : ''}</span>
+    </button>`).join('')}</div>`;
+}
+function pickLiveYear(y){ const s = document.getElementById('g-year'); if (!s) return; s.value = y; s.dispatchEvent(new Event('change')); jumpTo('g-sec-live'); }
 
 /* ---- live panel (NHTSA + EPA) ---- */
 function renderLivePanel(token, model, gen, yr){
   const el = document.getElementById('g-live');
   const years = yearsOf(gen);
-  el.innerHTML = `
+  el.innerHTML = `<span id="g-sec-live" class="anchor"></span>
     <div class="live-head">
       <div><div class="sub-h">Live government data</div><div class="live-badge">Loaded now from NHTSA and EPA for the selected model year</div></div>
       <div><label class="fieldlabel" for="g-year">Model year</label><select id="g-year" class="compact">${years.map(y => `<option${y === yr ? ' selected' : ''}>${y}</option>`).join('')}</select></div>
@@ -1744,8 +2314,9 @@ function renderLivePanel(token, model, gen, yr){
       <div class="tile"><div class="k">NHTSA crash rating</div><div class="v" id="t-saf"><span class="skeleton"></span></div><div class="d" id="t-saf-d">&nbsp;</div></div>
       <div class="tile"><div class="k" id="t-mpg-k">EPA fuel economy</div><div class="v" id="t-mpg"><span class="skeleton"></span></div><div class="d" id="t-mpg-d">&nbsp;</div></div>
     </div>
+    <div class="safety-tech" id="g-safety-tech"></div>
     <div class="two-col" style="margin-top:20px">
-      <div><div class="sub-h">Complaints by model year</div><div class="sub-p">Complaints owners filed with NHTSA across this generation. The selected year is highlighted.</div><div id="g-cmp-years"><div class="note">Loading…</div></div></div>
+      <div><div class="sub-h">Complaints by model year</div><div class="sub-p">Complaints owners filed with NHTSA across this generation. Tap a bar to load that year.</div><div id="g-cmp-years"><div class="note">Loading…</div></div></div>
       <div><div class="sub-h">Most-reported problem areas</div><div class="sub-p" id="g-comp-sub">For the selected model year.</div><div id="g-comp-top"><div class="note">Loading…</div></div></div>
     </div>
     <div style="margin-top:20px"><div class="sub-h">Recalls</div><div class="sub-p">Run the specific VIN on <a href="https://www.nhtsa.gov/recalls" target="_blank" rel="noopener">nhtsa.gov/recalls</a> to see whether each one was fixed.</div><div id="g-recalls" class="recall-list"><div class="note">Loading…</div></div></div>
@@ -1754,6 +2325,7 @@ function renderLivePanel(token, model, gen, yr){
   loadLiveYear(token, model, gen, yr, false);
   loadComplaintYears(token, model, gen, yr);
 }
+
 const stillOn = token => token === guideToken && document.getElementById('g-live');
 async function loadLiveYear(token, model, gen, year, yearChanged){
   if (yearChanged){
@@ -1809,12 +2381,23 @@ async function loadLiveYear(token, model, gen, year, yearChanged){
     if (!s || !s.overall){ v.textContent = 'Not rated'; d.textContent = 'no NHTSA overall rating for ' + year; return; }
     v.innerHTML = `<span class="stars" aria-label="${s.overall} out of 5 stars">${'★'.repeat(s.overall)}<span class="off">${'★'.repeat(5 - s.overall)}</span></span>`;
     d.textContent = `${s.overall}/5 overall · front ${s.front || '–'} · side ${s.side || '–'} · rollover ${s.rollover || '–'}`;
+    const tech = document.getElementById('g-safety-tech');
+    const std = v => !v ? null : /^standard/i.test(v) ? 'std' : /^optional/i.test(v) ? 'opt' : null;
+    const items = [['Stability control', std(s.esc)], ['Forward collision warning', std(s.fcw)], ['Lane departure warning', std(s.ldw)]].filter(x => x[1]);
+    let html = items.map(([n, v]) => `<span class="tech ${v}">${v === 'std' ? '✓' : '○'} ${n} <em>${v === 'std' ? 'standard' : 'optional'}</em></span>`).join('');
+    if (s.rollRisk) html += `<span class="tech">Rollover risk <em>${Math.round(parseFloat(s.rollRisk) * 1000) / 10}%</em></span>`;
+    html += `<span class="tech ${s.invest ? 'warn' : ''}">${s.invest ? '⚠' : '✓'} NHTSA investigations <em>${s.invest || 'none'}</em></span>`;
+    if (tech) tech.innerHTML = `<div class="tech-row"><span class="tech-k">Tested: ${esc(s.desc || '')}</span>${html}</div>`;
+    if (s.picture) addGuidePhoto(token, {src: s.picture, nhtsa: true});
   }).catch(() => { if (stillOn(token)){ document.getElementById('t-saf').textContent = '—'; document.getElementById('t-saf-d').textContent = 'rating service unavailable'; } });
 
   getEpa(model, year).then(e => {
     if (!stillOn(token) || +document.getElementById('g-year').value !== year) return;
     const v = document.getElementById('t-mpg'), d = document.getElementById('t-mpg-d'), list = document.getElementById('g-mpg-list');
-    if (!e){ v.textContent = '—'; d.textContent = 'not in the EPA database for ' + year; list.textContent = ''; return; }
+    if (!e){ v.textContent = '—'; d.textContent = 'not EPA-rated for ' + year; list.textContent = ''; return; }
+    const mid = Math.round((e.min + e.max) / 2);
+    guideEpaMpg = {year, mpg: mid};
+    const cy = document.getElementById('g-cost-year'); if (cy && +cy.value === year) renderGuideCost(model, gen);
     const unit = e.ev ? 'MPGe' : 'mpg';
     document.getElementById('t-mpg-k').textContent = e.ev ? 'EPA efficiency' : 'EPA fuel economy';
     v.innerHTML = (e.min === e.max ? e.min : e.min + '–' + e.max) + ` <small>${unit} combined</small>`;
@@ -1828,7 +2411,7 @@ async function loadLiveYear(token, model, gen, year, yearChanged){
     const tb = document.createElement('tbody');
     e.items.forEach(i => { const tr = document.createElement('tr'); [i.label, i.city, i.hwy, i.comb + ' ' + (i.ev ? 'MPGe' : 'mpg')].forEach(c => { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); }); tb.appendChild(tr); });
     tbl.appendChild(tb); det.appendChild(tbl); list.appendChild(det);
-  }).catch(() => { if (stillOn(token)){ document.getElementById('t-mpg').textContent = '—'; document.getElementById('t-mpg-d').textContent = 'EPA service unavailable'; } });
+  }).catch(() => { if (stillOn(token)){ document.getElementById('t-mpg').textContent = '—'; document.getElementById('t-mpg-d').textContent = 'EPA site not responding — try again later'; } });
 }
 async function loadComplaintYears(token, model, gen, selYear){
   const years = yearsOf(gen).slice(0, 10).reverse();
@@ -1903,8 +2486,12 @@ function renderCompare(){
     yFmt: v => Math.round(v) + '%', yMin: 0, yMax: 100, height: 260,
     series: cmpSlots.map((s, i) => { const {brand, m, g, y} = slotParts(s); return {name: `${y} ${brand.name} ${m.name}`, endLabel: m.name, color: SLOT_COLORS[i], points: retainedSeries(m, g, maxAge)}; })
   });
+  // 5-year cost to own
+  const parts0 = cmpSlots.map(slotParts);
+  const costs = parts0.map(p => costToOwn(p.m, p.g, p.y));
+  stackedRows(document.getElementById('cmp-cost'), {keys: COST_KEYS, fmt: v => fmtK(v), rows: parts0.map((p, i) => ({label: `${p.y} ${p.brand.name} ${p.m.name}`, color: SLOT_COLORS[i], v: costs[i].parts}))});
   // table
-  const parts = cmpSlots.map(slotParts);
+  const parts = parts0;
   const vals = parts.map(p => ({...p, val: estValue(p.m, p.g, p.y), kept5: retainedSeries(p.m, p.g, 5)[5][1]}));
   const best = (arr, dir) => { const v = arr.filter(x => x !== null && !isNaN(x)); if (v.length < 2) return -1; const t = dir > 0 ? Math.max(...v) : Math.min(...v); return v.filter(x => x === t).length === 1 ? arr.indexOf(t) : -1; };
   const row = (label, cells, winIdx) => `<tr><th scope="row">${label}</th>${cells.map((c, i) => `<td class="${i === winIdx ? 'win' : ''}">${c}</td>`).join('')}</tr>`;
@@ -1918,6 +2505,7 @@ function renderCompare(){
   t += row('Price when new', vals.map(v => `<b>${fmtK(priceNewThen(v.g, v.y))}</b> (${v.y} base)`), -1);
   t += row('Est. value today', vals.map(v => `<b>${fmtK(v.val * .9)}–${fmtK(v.val * 1.1)}</b>`), -1);
   t += row('Value kept after 5 yrs', vals.map(v => `<b>${Math.round(v.kept5)}%</b>`), best(vals.map(v => Math.round(v.kept5)), 1));
+  t += row('5-year cost to own', costs.map(c => `<b>${fmtK(c.total)}</b> · ${fmtMoney(c.perMonth)}/mo`), best(costs.map(c => Math.round(c.total)), -1));
   t += row('Yearly upkeep (brand)', vals.map(v => `<b>${fmtMoney(v.brand.upkeep)}</b>`), best(vals.map(v => v.brand.upkeep), -1));
   t += row('Known issues', vals.map(v => esc(v.g.issues.join(' · '))), -1);
   t += row('Typical repair cost', vals.map(v => v.g.fix ? esc(v.g.fix) : '<span class="muted">Normal maintenance only</span>'), -1);
@@ -2039,13 +2627,154 @@ function init(){
   populateGenSelect(document.getElementById('g-gen'), findModel('toyota', 'Camry'));
   document.getElementById('d-brand').value = 'toyota';
   onDealBrandChange();
+  const fy = document.getElementById('f-minyear'); fy.innerHTML = [2008, 2012, 2015, 2018, 2020, 2022].map(y => `<option value="${y}"${y === 2015 ? ' selected' : ''}>${y}</option>`).join('');
+  renderFinderChips();
+  __wasPhone = isPhone();
 
   const raw = decodeURIComponent((location.hash || '#brands').slice(1));
   const [view, b, mName, gLabel] = raw.split(':');
   if (view === 'guide' && b && mName && findModel(b, mName)){ openGuide(b, mName, gLabel); return; }
-  const v = ['brands', 'models', 'guide', 'compare', 'deal'].includes(view) ? view : 'brands';
+  const v = ['brands', 'models', 'guide', 'finder', 'compare', 'deal'].includes(view) ? view : 'brands';
   goView(v);
 }
+
+/* ============== CAR FINDER ============== */
+const PRIOS = [['rel', 'Reliability'], ['resale', 'Holds value'], ['cost', 'Low running cost'], ['mpg', 'Fuel economy'], ['perf', 'Performance'], ['new', 'Newest possible']];
+let fBodies = new Set(), fPrios = new Set(['rel', 'cost']);
+function fBudget(v){ document.getElementById('f-budget-out').textContent = fmtMoney(+v); clearTimeout(fBudget.t); fBudget.t = setTimeout(runFinder, 120); }
+function renderFinderChips(){
+  document.getElementById('f-body').innerHTML = ['Sedan', 'SUV', 'Truck', 'Hatchback', 'Minivan', 'Coupe'].map(b => `<button class="chip${fBodies.has(b) ? ' active' : ''}" aria-pressed="${fBodies.has(b)}" onclick="fToggle('body','${b}')">${b}</button>`).join('');
+  document.getElementById('f-prio').innerHTML = PRIOS.map(([id, n]) => `<button class="chip${fPrios.has(id) ? ' active' : ''}" aria-pressed="${fPrios.has(id)}" onclick="fToggle('prio','${id}')">${n}</button>`).join('');
+}
+function fToggle(kind, v){
+  const set = kind === 'body' ? fBodies : fPrios;
+  if (set.has(v)) set.delete(v); else { if (kind === 'prio' && set.size >= 3) set.delete([...set][0]); set.add(v); }
+  renderFinderChips(); runFinder();
+}
+function runFinder(){
+  const budget = +document.getElementById('f-budget').value, power = document.getElementById('f-power').value;
+  const minYear = +document.getElementById('f-minyear').value, miles = +document.getElementById('f-miles').value, seg = document.getElementById('f-seg').value;
+  const cands = [];
+  MODELS.forEach(m => {
+    const b = brandById(m.brand);
+    if (seg !== 'all' && b.seg !== seg) return;
+    if (fBodies.size && !fBodies.has(BODY_KEY(m.body))) return;
+    let best = null;
+    m.gens.forEach(g => {
+      const pt = powertrain(m, g);
+      if (power === 'gas' && pt !== 'gas') return;
+      if (power === 'hybrid' && !(pt === 'hybrid' || pt === 'phev')) return;
+      if (power === 'ev' && pt !== 'ev') return;
+      for (const y of yearsOf(g)){
+        if (y < minYear) break;
+        const v = estValue(m, g, y);
+        if (v > budget) continue;
+        if (!best || y > best.y || (y === best.y && TIER_RANK[g.tier] > TIER_RANK[best.g.tier])) best = {m, g, y, v};
+        break;
+      }
+    });
+    if (best) cands.push(best);
+  });
+  const sum = document.getElementById('f-summary'), out = document.getElementById('f-results');
+  if (!cands.length){ sum.innerHTML = ''; out.innerHTML = `<div class="err">Nothing we track fits all of that. Try a higher budget, an older “newer than” year, or fewer body styles.</div>`; return; }
+  cands.forEach(c => { c.cost = costToOwn(c.m, c.g, c.y, {miles}); c.mpg = estMpg(c.m, c.g); c.hp = firstHp(c.g); });
+  const rng = f => { const v = cands.map(f); const lo = Math.min(...v), hi = Math.max(...v); return x => hi === lo ? 1 : (f(x) - lo) / (hi - lo); };
+  const n = {
+    rel: c => (TIER_RANK[c.g.tier] / 3) * 0.6 + (brandById(c.m.brand).score / 10) * 0.4,
+    resale: rng(c => modelKept(c.m)), cost: (r => c => 1 - r(c))(rng(c => (c.cost.total - c.cost.parts.dep) / 5)),
+    mpg: rng(c => c.mpg), perf: rng(c => c.hp), new: rng(c => c.y), value: rng(c => c.v / budget)
+  };
+  cands.forEach(c => {
+    let w = 0, sc = 0;
+    const add = (k, wt) => { sc += n[k](c) * wt; w += wt; };
+    add('rel', fPrios.has('rel') ? 3 : 1.5);
+    PRIOS.forEach(([id]) => { if (id !== 'rel' && fPrios.has(id)) add(id, 2.2); });
+    add('value', 0.6); add('new', fPrios.has('new') ? 0 : 0.4);
+    if (c.g.tier === 'avoid') sc *= 0.75; else if (c.g.tier === 'caution') sc *= 0.9;
+    c.score = sc / w;
+    const why = [];
+    if (c.g.tier === 'best') why.push('Best Pick generation for reliability');
+    else if (c.g.tier === 'good') why.push('Solid Choice generation');
+    else why.push(TIER_LABEL[c.g.tier] + ' — check the known issues first');
+    if (fPrios.has('resale') && n.resale(c) > .6) why.push(`Keeps about ${modelKept(c.m)}% of its value over 5 years`);
+    if (fPrios.has('cost') && n.cost(c) > .55) why.push(`Low running costs — about ${fmtMoney((c.cost.total - c.cost.parts.dep) / 12 / 5)}/mo before depreciation`);
+    if (fPrios.has('mpg') && n.mpg(c) > .5) why.push(powertrain(c.m, c.g) === 'ev' ? 'Electric — cheapest energy per mile' : `Around ${c.mpg} mpg`);
+    if (fPrios.has('perf') && n.perf(c) > .5) why.push(`Up to ${c.hp} hp`);
+    if (c.v < budget * 0.7) why.push(`Leaves ${fmtK(budget - c.v)} of your budget spare`);
+    c.why = why.slice(0, 3);
+  });
+  cands.sort((a, b) => b.score - a.score);
+  const top = cands.slice(0, 12), max = top[0].score;
+  sum.innerHTML = `<b>${cands.length}</b> models fit. Showing the best ${top.length}, ranked for ${[...fPrios].map(p => PRIOS.find(x => x[0] === p)[1].toLowerCase()).join(', ') || 'reliability'}.`;
+  out.innerHTML = top.map((c, i) => {
+    const pct = Math.max(40, Math.round(99 * Math.pow(c.score / max, 2.5))), b = brandById(c.m.brand);
+    return `<article class="fit-card">
+      <div class="fit-rank">${i + 1}</div>
+      <div class="fit-art">${modelArt(c.m, c.g)}</div>
+      <div class="fit-body">
+        <div class="fit-top"><div><div class="model-card-brand">${esc(b.name)} · ${esc(c.m.body)} · ${esc(c.g.label)}</div><h3 class="fit-name">${c.y} ${esc(c.m.name)}</h3></div>
+          <div class="gauge fit-gauge">${gaugeSvg(pct / 100, pct >= 85 ? 'var(--green)' : pct >= 72 ? 'var(--blue)' : 'var(--amber)', {size: 58, stroke: 6})}<div class="readout"><b style="font-size:16px">${pct}</b><span>match</span></div></div></div>
+        <ul class="fit-why">${c.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>
+        <div class="fit-stats"><span><em>Est. price</em><b>${fmtK(c.v * .93)}–${fmtK(c.v * 1.07)}</b></span><span><em>5-yr cost</em><b>${fmtK(c.cost.total)}</b></span><span><em>Rating</em><b class="stamp-pill stamp-${c.g.tier}" style="font-size:10px">${TIER_LABEL[c.g.tier]}</b></span></div>
+        <div class="action-row"><button class="btn small" onclick="openGuideIdx(${MODELS.indexOf(c.m)}, ${c.m.gens.indexOf(c.g)})">Open guide</button><button class="btn ghost small" onclick="finderCompare(${MODELS.indexOf(c.m)}, ${c.m.gens.indexOf(c.g)}, ${c.y})">Compare</button></div>
+      </div>
+    </article>`;
+  }).join('');
+}
+function finderCompare(mi, gi, y){ ensureCmp(); const m = MODELS[mi]; const s = {b: m.brand, m: m.name, g: m.gens[gi].label, y}; if (cmpSlots.length >= 3) cmpSlots[2] = s; else cmpSlots.push(s); saveCmp(); goView('compare'); }
+
+/* ============== VIN LOOKUP ============== */
+let lastVin = null;
+async function runVin(raw, fromHero){
+  const vin = String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (fromHero){ goView('deal'); document.getElementById('d-vin').value = vin; }
+  const out = document.getElementById('vin-result');
+  if (vin.length !== 17 || /[IOQ]/.test(vin)){ out.innerHTML = `<div class="err">A VIN is 17 letters and numbers and never uses I, O or Q. You entered ${vin.length} character${vin.length === 1 ? '' : 's'}.</div>`; return; }
+  out.innerHTML = '<div class="note" style="margin-top:12px">Decoding…</div>';
+  let d;
+  try { d = await decodeVin(vin); } catch(e){ out.innerHTML = '<div class="err">Couldn’t reach NHTSA’s VIN decoder just now. Try again in a moment.</div>'; return; }
+  if (!d.make || !d.year){ out.innerHTML = `<div class="err">NHTSA couldn’t decode that VIN${d.errorText ? ': ' + esc(d.errorText.split(';')[0]) : ''}. Check it against the dashboard plate.</div>`; return; }
+  lastVin = {vin, d};
+  const okCheck = vinCheck(vin);
+  const spec = [['Year', d.year], ['Make', titleCase(d.make)], ['Model', d.model], ['Trim / series', d.trim], ['Body', d.body], ['Engine', d.engine], ['Fuel', d.fuel + (d.electrification ? ' · ' + d.electrification : '')], ['Transmission', d.trans], ['Drive', d.drive], ['Built in', d.plant]].filter(x => x[1]);
+  out.innerHTML = `<div class="vin-card">
+    <div class="vin-art">${d.m ? modelArt(d.m, d.g) : carSvg({body: /pickup|truck/i.test(d.body) ? 'Truck' : /sport utility|suv|crossover/i.test(d.body) ? 'SUV' : 'Sedan', seed: vin, year: d.year})}</div>
+    <div class="vin-main">
+      <div class="vin-title"><h3>${d.year} ${esc(titleCase(d.make))} ${esc(d.model)}</h3><span class="mono vin-code">${vin}</span></div>
+      ${okCheck ? '' : '<div class="rflag danger" style="display:inline-block;margin:6px 0">⚠ Check digit doesn’t match — the VIN may be mistyped, or altered</div>'}
+      <dl class="vin-spec">${spec.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+      ${d.m ? `<div class="vin-match"><span class="stamp-pill stamp-${(d.g || bestGen(d.m)).tier}">${TIER_LABEL[(d.g || bestGen(d.m)).tier]}</span> Matches our ${esc(d.brand.name)} ${esc(d.m.name)}${d.g ? ' ' + esc(d.g.label) + ' guide' : ''}.</div>` : `<div class="note">This model isn’t in our guide yet — recalls below still come straight from NHTSA.</div>`}
+      <div class="action-row" style="margin-top:12px">${d.m ? `<button class="btn small" onclick="openGuideIdx(${MODELS.indexOf(d.m)}, ${d.m.gens.indexOf(d.g || bestGen(d.m))})">Open its guide</button><button class="btn ghost small" onclick="vinToDeal()">Price-check this car</button>` : ''}</div>
+    </div>
+  </div>
+  <div class="sub-h" style="margin-top:18px">Recalls for the ${d.year} ${esc(d.model)}</div>
+  <div class="sub-p">Model-year recalls from NHTSA. To see which are still open on <b>this</b> car, enter the VIN at <a href="https://www.nhtsa.gov/recalls" target="_blank" rel="noopener">nhtsa.gov/recalls</a> or ask a dealer.</div>
+  <div class="recall-list" id="vin-recalls"><div class="note">Loading…</div></div>`;
+  const rb = document.getElementById('vin-recalls');
+  try {
+    const list = d.m ? (await getRecalls(d.m, d.year)).list : await recallsByMakeModel(d.make, d.model, d.year);
+    rb.textContent = '';
+    if (!list.length){ rb.innerHTML = `<div class="note">No recall campaigns on file for the ${d.year} ${esc(d.model)}.</div>`; return; }
+    list.forEach(x => {
+      const el = document.createElement('div'); el.className = 'recall';
+      const c = document.createElement('div'); c.className = 'rc'; c.textContent = (x.parkIt ? '⚠ Do not drive · ' : x.parkOutside ? '⚠ Park outside · ' : '') + titleCase(x.component.replace(/:/g, ' › '));
+      const sm = document.createElement('div'); sm.className = 'rs'; sm.textContent = x.summary.length > 220 ? x.summary.slice(0, 217) + '…' : x.summary;
+      const t = document.createElement('div'); t.className = 'rt'; t.textContent = 'Campaign ' + x.id;
+      el.appendChild(t); el.appendChild(c); el.appendChild(sm); rb.appendChild(el);
+    });
+  } catch(e){ rb.innerHTML = '<div class="err">Couldn’t reach NHTSA just now.</div>'; }
+}
+function vinToDeal(){
+  if (!lastVin || !lastVin.d.m) return;
+  const {d} = lastVin, g = d.g || bestGen(d.m);
+  document.getElementById('d-brand').value = d.m.brand; populateModelSelect(document.getElementById('d-model'), d.m.brand);
+  document.getElementById('d-model').value = d.m.name; populateGenSelect(document.getElementById('d-gen'), d.m);
+  document.getElementById('d-gen').value = d.m.gens.indexOf(g); onDealGenChange();
+  document.getElementById('d-year').value = Math.min(Math.max(d.year, g.y0), lastYear(g));
+  document.getElementById('d-price').focus();
+  document.getElementById('d-price').scrollIntoView({behavior: 'smooth', block: 'center'});
+}
+
 init();
 
 </script>
