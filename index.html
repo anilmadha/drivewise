@@ -357,7 +357,7 @@
   }
   @media(max-width:640px){
     .wrap{padding:0 16px;}
-    header .wrap{padding:11px 16px; justify-content:center;}
+    header .wrap{padding:11px 16px; justify-content:space-between;}
     nav.tabs{max-width:none;}
     nav.tabs button{padding:8px 9px; font-size:12px;}
     nav.tabs .long{display:none;} nav.tabs .short{display:inline;}
@@ -565,7 +565,7 @@
   @media(max-width:760px){
     :root{--hh:54px;}
     header{backdrop-filter:none; background:var(--header-solid);}
-    header .wrap{justify-content:center; padding:11px 16px;}
+    header .wrap{justify-content:space-between; padding:11px 16px; flex-wrap:nowrap;}
     nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:40; border:0; border-top:1px solid var(--border-2); background:var(--header-solid); padding:6px 4px max(12px, calc(4px + env(safe-area-inset-bottom))); gap:0; max-width:none; width:100%;}
     nav.tabs button{flex-direction:column; gap:3px; padding:6px 2px; font-size:10.5px; font-weight:600;}
     nav.tabs button.active{background:transparent; color:var(--amber);}
@@ -638,6 +638,7 @@
   .hbtn .hk{display:none; font-size:11px; font-family:'IBM Plex Mono',monospace; color:var(--ink-faint);}
   #hdr-search{width:auto; padding:0 10px;}
   @media (min-width:900px){ .hbtn .hk{display:inline;} }
+  .hbtn .badge[hidden]{display:none;}
   .hbtn .badge{position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:var(--amber); color:var(--amber-ink); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace;}
   #hdr-theme .moon{display:none;} :root[data-theme="light"] #hdr-theme .moon{display:block;} :root[data-theme="light"] #hdr-theme .sun{display:none;}
   body.modal-open{overflow:hidden;}
@@ -3092,8 +3093,7 @@ function vinToDeal(){
   document.getElementById('d-price').focus();
   document.getElementById('d-price').scrollIntoView({behavior: 'smooth', block: 'center'});
 }
-
-init();
+/* init() is called from ui8.js once every module is defined */
 
 /* ============== v8: THEME ============== */
 function currentTheme(){ return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'; }
@@ -3114,7 +3114,7 @@ function initTheme(){
 }
 
 /* ============== v8: SEARCH PALETTE ============== */
-let __palIdx = [], __palSel = 0, __palRows = [];
+var __palIdx = [], __palSel = 0, __palRows = [];
 function buildPaletteIndex(){
   __palIdx = [];
   BRANDS.forEach(b => __palIdx.push({kind: 'brand', b, text: (b.name + ' ' + b.id).toLowerCase(), title: b.name, sub: `${b.seg} · ${modelsForBrand(b.id).length} models · reliability ${b.score.toFixed(1)}`}));
@@ -3191,7 +3191,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============== v8: SAVED CARS (shortlist) ============== */
-let __saved = null;
+var __saved = null;
 function savedList(){ if (__saved) return __saved; try { __saved = JSON.parse(localStorage.getItem('dw-saved') || '[]'); } catch(e){ __saved = []; } if (!Array.isArray(__saved)) __saved = []; return __saved; }
 function savedKey(m, g){ return modelKey(m) + '|' + g.label; }
 function isSaved(m, g){ return savedList().some(s => s.k === savedKey(m, g)); }
@@ -3227,14 +3227,14 @@ function savedToCompare(mi, gi){ ensureCmp(); const m = MODELS[mi], g = m.gens[g
 function savedCompareAll(){ ensureCmp(); cmpSlots = savedList().slice(0, 3).map(s => { const m = findModel(s.b, s.m); const g = m.gens.find(x => x.label === s.g) || m.gens[0]; return {b: s.b, m: s.m, g: g.label, y: defaultYear(g)}; }); saveCmp(); closeSaved(); goView('compare'); }
 
 /* ============== v8: TOAST ============== */
-let __toastT = 0;
+var __toastT = 0;
 function showTipMsg(msg){
   let t = document.getElementById('toast'); if (!t){ t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
   t.textContent = msg; t.classList.add('on'); clearTimeout(__toastT); __toastT = setTimeout(() => t.classList.remove('on'), 2600);
 }
 
 /* ============== v8: RELIABILITY BREAKDOWN (5 systems) ============== */
-const SYS_AXES = [
+var SYS_AXES = [
   ['Engine', /\bengine|oil (consumption|leak|dilution|cooler|pan)|timing|head.?gasket|turbo|carbon|coolant|cylinder|misfire|valve|piston|water.?pump|egr|dpf|injector|fuel.?pump|rod.?bearing|sludge|vcm|cam|intake|intercooler|spark|lifter|hemi|ecoboost|theta|skyactiv|cvvt|powertrain/i],
   ['Transmission', /transmission|\bcvt\b|\bdsg\b|dual.?clutch|torque.?converter|gearbox|powershift|shudder|\btrans\b|clutch|differential|transfer.?case|driveshaft|\bawd\b|\b4wd\b|shift/i],
   ['Electrical & tech', /electr|electronic|infotainment|idrive|\bmmi\b|sensor|module|12.?v|wiring|software|screen|touchscreen|alternator|starter|headlight|light(s)?\b|key|sync\b|uconnect|battery|charging|display|camera|bluetooth|tpms|ecu|bcm|tcm|glitch|bug/i],
@@ -3286,9 +3286,9 @@ function renderReliabilityPanel(m, g){
 }
 
 /* ============== v8: LISTINGS & VALUE LINKS ============== */
-const SLUG_BRAND = {vw: 'volkswagen', mercedes: 'mercedes-benz', landrover: 'land-rover', alfaromeo: 'alfa-romeo'};
-const slugBrand = id => SLUG_BRAND[id] || id;
-const slugModel = n => n.toLowerCase().replace(/\+/g, ' plus').replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+var SLUG_BRAND = {vw: 'volkswagen', mercedes: 'mercedes-benz', landrover: 'land-rover', alfaromeo: 'alfa-romeo'};
+var slugBrand = id => SLUG_BRAND[id] || id;
+var slugModel = n => n.toLowerCase().replace(/\+/g, ' plus').replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 function listingLinks(m, g, year){
   const mk = slugBrand(m.brand), md = slugModel(m.name), y0 = g.y0, y1 = lastYear(g), y = year || defaultYear(g);
   const links = [
@@ -3320,7 +3320,7 @@ function shareGuide(){
   if (navigator.share && /iPhone|iPad|Android/i.test(navigator.userAgent)){ navigator.share({title, url}).catch(() => {}); return; }
   (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => showTipMsg('Link copied'), () => prompt('Copy this link', url));
 }
-const PPI_ITEMS = [
+var PPI_ITEMS = [
   ['Paperwork', ['Title is clean, in the seller\'s name, no liens', 'VIN on dash, door jamb and title all match', 'Service records — oil changes, transmission fluid, timing belt if due', 'Run the VIN on nhtsa.gov/recalls and NICB VINCheck']],
   ['Walk-around', ['Panel gaps even, paint matches on every panel (accident repair)', 'Tires: matching brand, even wear, date code under 6 years', 'Rust under doors, wheel arches, subframe, exhaust', 'Windshield chips, headlight haze, all lights work']],
   ['Under the hood', ['Oil clean, at level, no milky residue on cap', 'Coolant at level, no oil in it', 'No fresh leaks under the car after a 10-minute idle', 'Battery terminals clean, no corrosion']],
@@ -3364,15 +3364,30 @@ function renderPicksStrip(){
   const el = document.getElementById('picks-strip'); if (!el || !heroPicks.length) return;
   const picks = heroPicks.slice(0, 14);
   const tile = p => { const b = brandById(p.m.brand); const yr = Math.max(p.g.y0, Math.min(lastYear(p.g), 2021)); const [lo, hi] = valueRange(p.m, p.g, yr);
-    return `<button class="pick-tile" onclick="openGuideIdx(${MODELS.indexOf(p.m)}, ${p.m.gens.indexOf(p.g)})" aria-label="${esc(b.name)} ${esc(p.m.name)} guide"><div class="pick-art" data-mi="${MODELS.indexOf(p.m)}" data-gi="${p.m.gens.indexOf(p.g)}">${modelArt(p.m, p.g)}</div><div class="pick-body"><span class="pick-brand">${esc(b.name)}</span><b>${esc(p.m.name)}</b><small>${yearsLabel(p.g)} · ${fmtK(lo)}–${fmtK(hi)}</small></div></button>`; };
+    return `<button class="pick-tile" onclick="openGuideIdx(${MODELS.indexOf(p.m)}, ${p.m.gens.indexOf(p.g)})" aria-label="${esc(b.name)} ${esc(p.m.name)} guide"><div class="pick-art" data-mi="${MODELS.indexOf(p.m)}" data-gi="${p.m.gens.indexOf(p.g)}">${modelArt(p.m, p.g)}</div><div class="pick-body"><span class="pick-brand">${esc(b.name)}</span><b>${esc(p.m.name)}</b><small>${p.g.y0 === p.g.y1 ? p.g.y0 : yearsLabel(p.g)} · ${fmtK(lo)}–${fmtK(hi)}</small></div></button>`; };
   const html = picks.map(tile).join('');
   el.innerHTML = `<div class="picks-track">${html}${html}</div>`;
 }
+
+/* ============== v8: HASH ROUTING (back/forward, shared links) ============== */
+function routeFromHash(){
+  const raw = decodeURIComponent((location.hash || '#brands').slice(1));
+  const [view, b, mName, gLabel] = raw.split(':');
+  const cur = currentGuideSelection();
+  if (view === 'guide' && b && mName && findModel(b, mName)){
+    if (cur && cur.brand.id === b && cur.model.name === mName && (!gLabel || cur.gen.label === gLabel) && document.getElementById('view-guide').classList.contains('active')) return;
+    openGuide(b, mName, gLabel); return;
+  }
+  const v = ['brands', 'models', 'guide', 'finder', 'compare', 'deal'].includes(view) ? view : 'brands';
+  if (!document.getElementById('view-' + v).classList.contains('active')) goView(v);
+}
+window.addEventListener('hashchange', () => { try { routeFromHash(); } catch(e){} });
 
 /* ============== v8: BOOT ============== */
 (function(){
   const boot = () => {
     try { initTheme(); } catch(e){}
+    init();
     try { updateSavedBadge(); } catch(e){}
     try { buildPaletteIndex(); } catch(e){}
     try { renderPicksStrip(); } catch(e){}
